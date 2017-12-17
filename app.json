@@ -1,0 +1,19 @@
+{
+  "name": "callbymeaning",
+  "description": "Server code for the CallByMeaning project.",
+  "repository": "https://github.com/cbmjs/CallByMeaning.git",
+  "env": {
+    "ON_HEROKU": {
+      "description": "A config var that tells the server that it's on Hekoru.",
+      "value": "1"
+    },
+    "DB_HOST": {
+      "description": "The URL of the MongoDB instance to use."
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

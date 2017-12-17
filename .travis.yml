@@ -1,0 +1,19 @@
+before_install:
+- npm update -g npm
+cache:
+  directories:
+  - node_modules
+deploy:
+  provider: heroku
+  api_key:
+    secure: SiGwsfH4qA0UqHKKQDYnNAGRwb9+8Zad+MNrDip34HZKi+E/1kokXDh68MKUAZvj8hAFpx3rvpp1Gf+XT5qh/yEQKFrhCRvU5rxjqVJXww5HytiXmJkMiXgwThVvbIQsfk8SPhCt+HgfWjQUV+4qIBv/cUzYDBXBAF0vgMJyBX0UFWtnfWYejxKb3WHk7as3WZOI4pb/lnTQImGtj1BxDipcd+mZ8MG+pgSc7kd08Jij4QaLzNYGixnMqTb4eyNwKcefmSBR1DY1UKH3gEEdCr3anv6c3aTEx0rfwDUgYynydJa/TX1t3Jrn3ivc1AQ0EWrkBHh0xC18Ski8l11vxvfygWJjGQ6W6YvBQIU7Y9IOlj4O87XUD9uoDrg1p2utf6klrW7YNTkuwTr/X4noEmi9XCjSxZxZvwgXaitycvIT7a+u/ojeYkf/ZnhMOADTl2dT271JgKFxZxuHnGY1k1c8tFUsmBAYD0JFflbLDH2CYGXFWnnwkRWFfuxKg6G9Q1KWNGiTqjy6I5L+RRqd43kkg3JBYmxAZUcfn3cbsepY7HsnJhbkRxJYF+X2VTdOeJx4Yt4ZFkEuqRtZpa+FjFlcrQt+RYkoq4DDEuMnMdXthrEWeRBEliqQFhrEurQqK0f2HPwkwWTzaSzsdOQuDashNaUsDv+dUGfj7mvz5yM=
+  app: call-by-meaning
+  on:
+    repo: cbmjs/CallByMeaning
+  skip_cleanup: true
+language: node_js
+node_js:
+- node
+notifications:
+  email: false
+sudo: false

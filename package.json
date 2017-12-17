@@ -1,0 +1,46 @@
+{
+  "name": "callbymeaning",
+  "version": "1.1.0",
+  "description": "Code for the server-side of the cbmjs platform.",
+  "main": "app/index.js",
+  "scripts": {
+    "start": "node app/index.js",
+    "test": "jest",
+    "initDB": "node app/dev/initDB.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cbmjs/CallByMeaning.git"
+  },
+  "author": {
+    "name": "Napoleon-Christos Oikonomou",
+    "email": "napoleonoikon@gmail.com"
+  },
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/cbmjs/CallByMeaning/issues"
+  },
+  "homepage": "https://github.com/cbmjs/CallByMeaning#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chalk": "^2.3.0",
+    "dotenv": "^4.0.0",
+    "express": "^4.16.2",
+    "mathjs": "^3.18.0",
+    "mongodb": "^3.0.0-rc0",
+    "mongoose": "^4.13.7",
+    "morgan": "^1.9.0",
+    "multer": "^1.3.0",
+    "natural": "^0.5.4",
+    "request": "^2.83.0",
+    "shelljs": "^0.7.8",
+    "wordpos": "^1.1.5"
+  },
+  "devDependencies": {
+    "jest": "^21.2.1"
+  },
+  "engines": {
+    "node": "^9.2.0",
+    "npm": "^5.6.0"
+  }
+}
