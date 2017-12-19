@@ -44,7 +44,7 @@ router.post('/call', (req, res) => {
     if (outputUnits[i] == null || outputUnits[i] === '-' || outputUnits[i] === '') outputUnits[i] = outputNodes[i];
   }
 
-  if (outputNodes == null || outputNodes.length !== outputUnits.length) {
+  if (outputNodes == null || outputNodes.length === 0 || outputNodes.length !== outputUnits.length) {
     return res.status(400).send('A function must have at least one output and every output must have its unit.');
   }
   if (inputNodes.length !== inputUnits.length) {

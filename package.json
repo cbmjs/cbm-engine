@@ -1,6 +1,6 @@
 {
   "name": "callbymeaning",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Code for the server-side of the cbmjs platform.",
   "main": "app/index.js",
   "scripts": {
@@ -37,7 +37,7 @@
     "wordpos": "^1.1.5"
   },
   "devDependencies": {
-    "jest": "^21.2.1"
+    "jest": "^22.0.1"
   },
   "engines": {
     "node": "^9.2.0",

@@ -16,7 +16,7 @@ router.get('/search', (req, res) => {
 
 router.post('/search', (req, res) => {
   req.body.inputNodes = req.body.inputNodes || [];
-  if (req.body.outputNodes == null) return res.status(400).send('A function must have at least one output');
+  if (req.body.outputNodes == null || req.body.outputNodes.length === 0) return res.status(400).send('A function must have at least one output');
   const inputNodes = req.body.inputNodes instanceof Object ? req.body.inputNodes : req.body.inputNodes.split(' ').join('').split(',');
   const outputNodes = req.body.outputNodes instanceof Object ? req.body.outputNodes : req.body.outputNodes.split(' ').join('').split(',');
   Function.find({ argsNames: inputNodes, returnsNames: outputNodes }, (err, funcs) => {
