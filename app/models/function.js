@@ -24,4 +24,7 @@ const functionSchema = new mongoose.Schema({
   returnsUnits: [],
 }, { usePushEach: true });
 
-module.exports = mongoose.model('Function', functionSchema);
+mongoose.pluralize(null);
+const model = mongoose.model('Function', functionSchema);
+
+module.exports = model;

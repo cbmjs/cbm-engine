@@ -25,4 +25,7 @@ const relationSchema = new mongoose.Schema({
   }],
 }, { usePushEach: true });
 
-module.exports = mongoose.model('Relation', relationSchema);
+mongoose.pluralize(null);
+const model = mongoose.model('Relation', relationSchema);
+
+module.exports = model;

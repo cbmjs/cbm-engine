@@ -9,7 +9,7 @@ const path = require('path');
 
 const port = process.env.PORT || 3000;
 
-mongoose.connect(process.env.DB_HOST || 'mongodb://localhost:27017/'.concat(process.env.DB || 'callbymeaning'), { useMongoClient: true });
+mongoose.connect(process.env.DB_HOST || 'mongodb://localhost:27017/'.concat(process.env.DB || 'callbymeaning'));
 mongoose.Promise = global.Promise;
 if (!fs.existsSync(path.join(__dirname, '../logs/'))) fs.mkdirSync(path.join(__dirname, '../logs/'));
 const accessLogStream = fs.createWriteStream(path.join(__dirname, '../logs/access.log'), { flags: 'a' });
@@ -42,12 +42,7 @@ app.use('/cbm', require('./routes/callByMeaningRoutes'));
 app.all('*', (req, res) => res.status(404).send('Hmm... How did you end up here?'));
 
 const server = app.listen(port, () => {
-  // eslint-disable-next-line eqeqeq
-  if (process.env.ON_HEROKU == 1) {
-    console.log(`Server ${chalk.green('started')}. Have fun. 😀`);
-  } else {
-    console.log(`Server ${chalk.green('started')} at http://localhost:${port}. Have fun. 😀`);
-  }
+  console.log(`Server ${chalk.green('started')} at http://localhost:${port}. Have fun. 😀`);
 });
 
 exports.close = () => {

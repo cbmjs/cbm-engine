@@ -25,4 +25,7 @@ const nodeSchema = new mongoose.Schema({
   }],
 }, { usePushEach: true });
 
-module.exports = mongoose.model('Node', nodeSchema);
+mongoose.pluralize(null);
+const model = mongoose.model('Node', nodeSchema);
+
+module.exports = model;
