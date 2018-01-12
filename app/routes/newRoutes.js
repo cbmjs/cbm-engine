@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 
@@ -50,6 +51,7 @@ router.post('/node', (req, res) => {
 router.post('/function', upload.any(), (req, res) => {
   const name = req.body.name;
   const desc = req.body.desc || '';
+  const isAPI = JSON.parse(req.body.isApi);
   let argsNames = req.body.argsNames || [];
   argsNames = argsNames instanceof Object ? argsNames : argsNames.split(' ').join('').split(',');
   let argsUnits = req.body.argsUnits || [];
@@ -58,23 +60,29 @@ router.post('/function', upload.any(), (req, res) => {
   returnsNames = returnsNames instanceof Object ? returnsNames : returnsNames.split(' ').join('').split(',');
   let returnsUnits = req.body.returnsUnits || [];
   returnsUnits = returnsUnits instanceof Object ? returnsUnits : returnsUnits.split(' ').join('').split(',');
-  const codeFile = (req.files && req.files[0].originalname) ? req.files[0].originalname : 'default.js';
-
+  let codeFile;
   for (let i = 0; i < argsNames.length; i += 1) {
     if (argsUnits[i] == null || argsUnits[i] === '-' || argsUnits[i] === '') argsUnits[i] = argsNames[i];
   }
   for (let i = 0; i < returnsNames.length; i += 1) {
     if (returnsUnits[i] == null || returnsUnits[i] === '-' || returnsUnits[i] === '') returnsUnits[i] = returnsNames[i];
   }
+  if (!isAPI) {
+    codeFile = (req.files && req.files[0].originalname) ? req.files[0].originalname : 'default.js';
+  } else {
+    codeFile = `${name}.js`;
+    const apiFunc = `const request = require('sync-request');\n\nmodule.exports = (...args) => {\nlet uri = '${req.body.api_link}';\nconst argsToreplace = ${JSON.stringify(argsUnits)};\nargsToreplace.forEach((el, index) => { uri = uri.replace(el, args[index]); });\nconst res = request('GET', uri);\nreturn res.getBody('utf8');\n};`;
+    fs.writeFileSync(path.join(__dirname, '../../library', codeFile), apiFunc);
+  }
 
   Function.findOne({ name }, (err, func) => {
     if (err) console.error(err);
     if (func) {
-      func.argsNames = func.argsNames.concat(argsNames);
-      func.argsUnits = func.argsUnits.concat(argsUnits);
-      func.returnsNames = func.returnsNames.concat(returnsNames);
-      func.returnsUnits = func.returnsUnits.concat(returnsUnits);
-      if (codeFile !== 'default.js') func.codeFile = codeFile;
+      func.argsNames = argsNames;
+      func.argsUnits = argsUnits;
+      func.returnsNames = returnsNames;
+      func.returnsUnits = returnsUnits;
+      func.codeFile = codeFile || 'default.js';
       func.markModified('argsNames');
       func.markModified('argsUnits');
       func.markModified('returnsNames');
