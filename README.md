@@ -21,6 +21,17 @@ Default host is `http://localhost` and port is 3000 but you can change that by s
 
 If mongo is local, you only need to specify the name of the database by using the DB env variable, instead of the DB_HOST.
 
+## Docker
+
+You can use Docker to run the web server too. Just clone the repository, change the `DB_HOST` accordingly [here](Dockerfile#L9) and then:
+
+```bash
+git clone https://github.com/cbmjs/CallByMeaning.git
+cd CallByMeaning
+docker build -t call-by-meaning .
+docker run -p 3000:3000 call-by-meaning
+```
+
 ## Unit Tests
 
 Run tests via the command `npm test`

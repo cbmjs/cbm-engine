@@ -71,7 +71,7 @@ router.post('/function', upload.any(), (req, res) => {
     codeFile = (req.files && req.files[0].originalname) ? req.files[0].originalname : 'default.js';
   } else {
     codeFile = `${name}.js`;
-    const apiFunc = `const request = require('sync-request');\n\nmodule.exports = (...args) => {\nlet uri = '${req.body.api_link}';\nconst argsToreplace = ${JSON.stringify(argsUnits)};\nargsToreplace.forEach((el, index) => { uri = uri.replace(el, args[index]); });\nconst res = request('GET', uri);\nreturn res.getBody('utf8');\n};`;
+    const apiFunc = `const request = require('sync-request');\n\nmodule.exports = (...args) => {\nlet uri = '${req.body.api_link}';\nconst argsToreplace = ${JSON.stringify(argsNames)};\nargsToreplace.forEach((el, index) => { uri = uri.replace(el, args[index]); });\nconst res = request('GET', uri);\nreturn res.getBody('utf8');\n};`;
     fs.writeFileSync(path.join(__dirname, '../../library', codeFile), apiFunc);
   }
 
