@@ -15,11 +15,11 @@ router.get('/search', (req, res) => {
 });
 
 router.post('/search', (req, res) => {
-  req.body.inputNodes = req.body.inputNodes || [];
-  if (req.body.outputNodes == null || req.body.outputNodes.length === 0) return res.status(400).send('A function must have at least one output');
-  const inputNodes = req.body.inputNodes instanceof Object ? req.body.inputNodes : req.body.inputNodes.split(' ').join('').split(',');
-  const outputNodes = req.body.outputNodes instanceof Object ? req.body.outputNodes : req.body.outputNodes.split(' ').join('').split(',');
-  Function.find({ argsNames: inputNodes, returnsNames: outputNodes }, (err, funcs) => {
+  req.body.inputConcepts = req.body.inputConcepts || [];
+  if (req.body.outputConcepts == null || req.body.outputConcepts.length === 0) return res.status(400).send('A function must have at least one output');
+  const inputConcepts = req.body.inputConcepts instanceof Object ? req.body.inputConcepts : req.body.inputConcepts.split(' ').join('').split(',');
+  const outputConcepts = req.body.outputConcepts instanceof Object ? req.body.outputConcepts : req.body.outputConcepts.split(' ').join('').split(',');
+  Function.find({ argsNames: inputConcepts, returnsNames: outputConcepts }, (err, funcs) => {
     if (err) console.log(err);
     if (funcs.length !== 0) {
       const temp = [];
@@ -28,14 +28,14 @@ router.post('/search', (req, res) => {
       }
       return res.json(temp);
     }
-    for (let i = 0; i < outputNodes.length; i += 1) {
+    for (let i = 0; i < outputConcepts.length; i += 1) {
       if (res.headersSent) break;
-      request.get(`${req.protocol}://${req.get('host')}${req.originalUrl[0]}gbn/c/${outputNodes[i]}`, (err2, response, body) => {
-        if (response.statusCode !== 200) return res.status(418).send(`Could not interpret the node: ${outputNodes[i]}`);
-        outputNodes[i] = JSON.parse(body).name;
-        if (i === outputNodes.length - 1) {
-          if (inputNodes.length === 0) {
-            Function.find({ argsNames: inputNodes, returnsNames: outputNodes }, (err3, funcs2) => {
+      request.get(`${req.protocol}://${req.get('host')}${req.originalUrl[0]}gbn/c/${outputConcepts[i]}`, (err2, response, body) => {
+        if (response.statusCode !== 200) return res.status(418).send(`Could not interpret the concept: ${outputConcepts[i]}`);
+        outputConcepts[i] = JSON.parse(body).name;
+        if (i === outputConcepts.length - 1) {
+          if (inputConcepts.length === 0) {
+            Function.find({ argsNames: inputConcepts, returnsNames: outputConcepts }, (err3, funcs2) => {
               if (err3) console.log(err);
               if (funcs2.length !== 0) {
                 const temp = [];
@@ -47,13 +47,13 @@ router.post('/search', (req, res) => {
               return res.status(418).send('Function not found.');
             });
           } else {
-            for (let j = 0; j < inputNodes.length; j += 1) {
+            for (let j = 0; j < inputConcepts.length; j += 1) {
               if (res.headersSent) break;
-              request.get(`${req.protocol}://${req.get('host')}${req.originalUrl[0]}gbn/c/${inputNodes[j]}`, (err3, response2, body2) => {
-                if (response2.statusCode !== 200) return res.status(418).send(`Could not interpret the node: ${inputNodes[j]}`);
-                outputNodes[i] = JSON.parse(body2).name;
-                if (j === inputNodes.length - 1) {
-                  Function.find({ argsNames: inputNodes, returnsNames: outputNodes }, (err4, funcs2) => {
+              request.get(`${req.protocol}://${req.get('host')}${req.originalUrl[0]}gbn/c/${inputConcepts[j]}`, (err3, response2, body2) => {
+                if (response2.statusCode !== 200) return res.status(418).send(`Could not interpret the concept: ${inputConcepts[j]}`);
+                outputConcepts[i] = JSON.parse(body2).name;
+                if (j === inputConcepts.length - 1) {
+                  Function.find({ argsNames: inputConcepts, returnsNames: outputConcepts }, (err4, funcs2) => {
                     if (err4) console.log(err4);
                     if (funcs2.length !== 0) {
                       const temp = [];

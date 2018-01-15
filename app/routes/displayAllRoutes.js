@@ -2,36 +2,36 @@ const express = require('express');
 
 const router = new express.Router();
 
-const Node = require('../models/node');
+const Concept = require('../models/concept');
 const Function = require('../models/function');
 const Relation = require('../models/relation');
 
 router.all('/', (req, res) => {
-  res.send('Hello.<br> Check <a href=./all/nodes>nodes</a><br>Check <a href=./all/functions>functions</a><br>Check <a href=./all/relations>relations</a>');
+  res.send('Hello.<br> Check <a href=./all/concepts>concepts</a><br>Check <a href=./all/functions>functions</a><br>Check <a href=./all/relations>relations</a>');
 });
 
-router.get('/nodes', (req, res) => {
-  Node.find({}, (err, nodes) => {
+router.get('/concepts', (req, res) => {
+  Concept.find({}, (err, concepts) => {
     if (err) console.error(err);
-    if (nodes.length === 0) return res.status(418).send('There aren\'t any nodes.');
+    if (concepts.length === 0) return res.status(418).send('There aren\'t any concepts.');
     const temp = [];
-    nodes.forEach((node) => {
+    concepts.forEach((concept) => {
       temp.push({
-        name: node.name,
-        description: node.desc,
-        units: node.units,
+        name: concept.name,
+        description: concept.desc,
+        units: concept.units,
       });
     });
     return res.json(temp);
   });
 });
 
-router.get('/nodes/names', (req, res) => {
-  Node.find({}, (err, nodes) => {
+router.get('/concepts/names', (req, res) => {
+  Concept.find({}, (err, concepts) => {
     if (err) console.error(err);
-    if (nodes.length === 0) return res.status(418).send('There aren\'t any nodes.');
+    if (concepts.length === 0) return res.status(418).send('There aren\'t any concepts.');
     const temp = [];
-    nodes.forEach(node => temp.push(node.name));
+    concepts.forEach(concept => temp.push(concept.name));
     return res.json(temp);
   });
 });

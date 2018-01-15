@@ -17,14 +17,14 @@ router.get('/call', (req, res) => {
 });
 
 router.post('/call', (req, res) => {
-  req.body.inputNodes = req.body.inputNodes || [];
+  req.body.inputConcepts = req.body.inputConcepts || [];
   req.body.inputUnits = req.body.inputUnits || [];
   req.body.inputVars = req.body.inputVars || [];
-  req.body.outputNodes = req.body.outputNodes || [];
+  req.body.outputConcepts = req.body.outputConcepts || [];
   req.body.outputUnits = req.body.outputUnits || [];
   // eslint-disable-next-line eqeqeq
   const returnCode = (req.headers.returncode == 'true');
-  const inputNodes = req.body.inputNodes instanceof Object ? req.body.inputNodes : req.body.inputNodes.split(' ').join('').split(',');
+  const inputConcepts = req.body.inputConcepts instanceof Object ? req.body.inputConcepts : req.body.inputConcepts.split(' ').join('').split(',');
   const inputUnits = req.body.inputUnits instanceof Object ? req.body.inputUnits : req.body.inputUnits.split(' ').join('').split(',');
   let inputVars = req.body.inputVars instanceof Object ? req.body.inputVars : req.body.inputVars.split(' ').join('').split(',');
   inputVars = inputVars.map((inputVar) => {
@@ -34,23 +34,23 @@ router.post('/call', (req, res) => {
       return inputVar;
     }
   });
-  const outputNodes = req.body.outputNodes instanceof Object ? req.body.outputNodes : req.body.outputNodes.split(' ').join('').split(',');
+  const outputConcepts = req.body.outputConcepts instanceof Object ? req.body.outputConcepts : req.body.outputConcepts.split(' ').join('').split(',');
   const outputUnits = req.body.outputUnits instanceof Object ? req.body.outputUnits : req.body.outputUnits.split(' ').join('').split(',');
 
-  for (let i = 0; i < inputNodes.length; i += 1) {
-    if (inputUnits[i] == null || inputUnits[i] === '-' || inputUnits[i] === '') inputUnits[i] = inputNodes[i];
+  for (let i = 0; i < inputConcepts.length; i += 1) {
+    if (inputUnits[i] == null || inputUnits[i] === '-' || inputUnits[i] === '') inputUnits[i] = inputConcepts[i];
   }
-  for (let i = 0; i < outputNodes.length; i += 1) {
-    if (outputUnits[i] == null || outputUnits[i] === '-' || outputUnits[i] === '') outputUnits[i] = outputNodes[i];
+  for (let i = 0; i < outputConcepts.length; i += 1) {
+    if (outputUnits[i] == null || outputUnits[i] === '-' || outputUnits[i] === '') outputUnits[i] = outputConcepts[i];
   }
 
-  if (outputNodes == null || outputNodes.length === 0 || outputNodes.length !== outputUnits.length) {
+  if (outputConcepts == null || outputConcepts.length === 0 || outputConcepts.length !== outputUnits.length) {
     return res.status(400).send('A function must have at least one output and every output must have its unit.');
   }
-  if (inputNodes.length !== inputUnits.length) {
+  if (inputConcepts.length !== inputUnits.length) {
     return res.status(400).send('Input parameters must have the same length.');
   }
-  request.post({ uri: `${req.protocol}://${req.get('host')}${req.originalUrl[0]}gbm/search/`, form: { inputNodes, outputNodes } }, (err, response, body) => {
+  request.post({ uri: `${req.protocol}://${req.get('host')}${req.originalUrl[0]}gbm/search/`, form: { inputConcepts, outputConcepts } }, (err, response, body) => {
     if (err) console.error(err);
     if (response.statusCode !== 200) return res.status(response.statusCode).send(body);
     Function.find({ codeFile: { $in: JSON.parse(body).map(item => item.function) }, argsUnits: inputUnits, returnsUnits: outputUnits }).populate('results').exec((err2, funcs) => {

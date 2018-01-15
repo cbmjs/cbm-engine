@@ -10,8 +10,8 @@ The full format of the object that should be included in the request is below:
 
 ``` javascript
 {
-  'inputNodes': ['node1', 'node2'[, ...]],
-  'outputNodes': ['node1', 'node2'[, ...]]
+  'inputConcepts': ['concept1', 'concept2'[, ...]],
+  'outputConcepts': ['concept1', 'concept2'[, ...]]
 }
 ```
 
@@ -25,8 +25,8 @@ If any of the above isn't applicable, for example if you ask for a function with
 const request = require('request');
 const uri = 'https://call-by-meaning.herokuapp.com/gbm/search';
 let params = {
-  'inputNodes': 'date',
-  'outputNodes': 'time'
+  'inputConcepts': 'date',
+  'outputConcepts': 'time'
 };
 let req = request.post(uri, {form: params}, function (err, response) {
   // Insert code here...

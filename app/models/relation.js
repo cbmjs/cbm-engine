@@ -10,14 +10,14 @@ const relationSchema = new mongoose.Schema({
     start: {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Node',
+        ref: 'Concept',
       },
       name: String,
     },
     end: {
       id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Node',
+        ref: 'Concept',
       },
       name: String,
     },

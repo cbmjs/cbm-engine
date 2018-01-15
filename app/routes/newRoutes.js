@@ -15,34 +15,34 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-const Node = require('../models/node');
+const Concept = require('../models/concept');
 const Function = require('../models/function');
 const Relation = require('../models/relation');
 
 const fix = require('../dev/fillWithFuncs');
 
 router.all('/', (req, res) => {
-  res.send('Hello. From this path you can add new thing to the DB by sending a POST request to /node, /function or /relation.');
+  res.send('Hello. From this path you can add new thing to the DB by sending a POST request to /concept, /function or /relation.');
 });
 
-router.post('/node', (req, res) => {
+router.post('/concept', (req, res) => {
   const name = req.body.name;
   const desc = req.body.desc || '';
   let units = req.body.units || [];
   units = units instanceof Object ? units : units.split(' ').join('').split(',');
-  Node.findOne({ name }, (err, node) => {
+  Concept.findOne({ name }, (err, concept) => {
     if (err) console.error(err);
-    if (node) {
-      node.units = node.units.concat(units);
-      node.markModified('units');
-      node.save((err2) => {
+    if (concept) {
+      concept.units = concept.units.concat(units);
+      concept.markModified('units');
+      concept.save((err2) => {
         if (err2) console.error(err2);
       });
-      return res.status(200).send('Node added.');
+      return res.status(200).send('Concept added.');
     }
-    Node.create({ name, desc, units }, (err2, node2) => {
+    Concept.create({ name, desc, units }, (err2, concept2) => {
       if (err2) console.error(err2);
-      if (node2.length !== 0) return res.status(200).send('Node added.');
+      if (concept2.length !== 0) return res.status(200).send('Concept added.');
       return res.status(418).send('Something went wrong.');
     });
   });
@@ -51,7 +51,7 @@ router.post('/node', (req, res) => {
 router.post('/function', upload.any(), (req, res) => {
   const name = req.body.name;
   const desc = req.body.desc || '';
-  const isAPI = JSON.parse(req.body.isApi);
+  const isAPI = req.body.isApi ? JSON.parse(req.body.isApi) : false;
   let argsNames = req.body.argsNames || [];
   argsNames = argsNames instanceof Object ? argsNames : argsNames.split(' ').join('').split(',');
   let argsUnits = req.body.argsUnits || [];

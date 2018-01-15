@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const nodeSchema = new mongoose.Schema({
+const conceptSchema = new mongoose.Schema({
   name: {
     type: String,
     unique: true,
@@ -26,6 +26,6 @@ const nodeSchema = new mongoose.Schema({
 }, { usePushEach: true });
 
 mongoose.pluralize(null);
-const model = mongoose.model('Node', nodeSchema);
+const model = mongoose.model('Concept', conceptSchema);
 
 module.exports = model;

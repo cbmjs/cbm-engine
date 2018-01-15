@@ -10,10 +10,10 @@ The full format of the object that should be included in the request is below:
 
 ``` javascript
 {
-  'inputNodes': ['node1', 'node2'[, ...]],
+  'inputConcepts': ['concept1', 'concept2'[, ...]],
   'inputUnits': ['unit1', 'unit2'[, ...]],
   'inputVars': [var1, var2[, ...]],
-  'outputNodes': ['node1', 'node2'[, ...]],
+  'outputConcepts': ['concept1', 'concept2'[, ...]],
   'outputUnits': ['unit1', 'unit2'[, ...]]
 }
 ```
@@ -29,10 +29,10 @@ const request = require('request');
 const uri = 'https://call-by-meaning.herokuapp.com/cbm/call';
 let bday = new Date(1993, 2, 24);
 let params = {
-  'inputNodes': 'date',
+  'inputConcepts': 'date',
   'inputUnits': 'date',
   'inputVars': bday,
-  'outputNodes': 'star_sign',
+  'outputConcepts': 'star_sign',
   'outputUnits': 'word'
 };
 let req = request.post(uri, {form: params}, function (err, response, body) {

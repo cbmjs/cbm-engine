@@ -88,11 +88,11 @@ describe('CallByMeaning Server', () => {
       });
 
       it('POST / returns a function if it exists', () => {
-        request.post({ uri: `${HOST}gbm/search`, form: { outputNodes: ['time'] } }, (error, response) => expect(JSON.parse(response.body)[0].function).toEqual('now.js'));
+        request.post({ uri: `${HOST}gbm/search`, form: { outputConcepts: ['time'] } }, (error, response) => expect(JSON.parse(response.body)[0].function).toEqual('now.js'));
       });
 
       it('POST / returns returns status code 418 if it can\'t find a function', () => {
-        request.post({ uri: `${HOST}gbm/search`, form: { outputNodes: ['days'] } }, (error, response) => expect(response.statusCode).toEqual(418));
+        request.post({ uri: `${HOST}gbm/search`, form: { outputConcepts: ['days'] } }, (error, response) => expect(response.statusCode).toEqual(418));
       });
     });
   });
@@ -117,20 +117,20 @@ describe('CallByMeaning Server', () => {
 
       it('POST / can retrieve a function with given arguments if it is in DB (with same units)', () => {
         // eslint-disable-next-line no-eval
-        request.post({ uri: `${HOST}cbm/call`, form: { outputNodes: ['time'], outputUnits: ['milliseconds'] } }, (error, response) => expect(JSON.parse(response.body)).toBe(eval(JSON.parse(response.body))));
+        request.post({ uri: `${HOST}cbm/call`, form: { outputConcepts: ['time'], outputUnits: ['milliseconds'] } }, (error, response) => expect(JSON.parse(response.body)).toBe(eval(JSON.parse(response.body))));
       });
 
       it('POST / can retrieve a function with given arguments if it is in DB (with different units)', () => {
         // eslint-disable-next-line no-eval
-        request.post({ uri: `${HOST}cbm/call`, form: { outputNodes: ['time'], outputUnits: ['hours'] } }, (error, response) => expect(JSON.parse(response.body)).toBe(eval(JSON.parse(response.body))));
+        request.post({ uri: `${HOST}cbm/call`, form: { outputConcepts: ['time'], outputUnits: ['hours'] } }, (error, response) => expect(JSON.parse(response.body)).toBe(eval(JSON.parse(response.body))));
       });
 
       it('POST / can retrieve a function\'s code if returncode = true', () => {
-        request.post({ uri: `${HOST}cbm/call`, headers: { returncode: true }, form: { outputNodes: ['time'], outputUnits: ['hours'] } }, (error, response) => expect(JSON.parse(response.body).function).toEqual('now.js'));
+        request.post({ uri: `${HOST}cbm/call`, headers: { returncode: true }, form: { outputConcepts: ['time'], outputUnits: ['hours'] } }, (error, response) => expect(JSON.parse(response.body).function).toEqual('now.js'));
       });
 
       it('POST / returns status 418 if it can\'t find a function in the DB', () => {
-        request.post({ uri: `${HOST}cbm/call`, headers: { returncode: true }, form: { outputNodes: ['bla'], outputUnits: ['seconds'] } }, (error, response) => expect(response.statusCode).toEqual(200));
+        request.post({ uri: `${HOST}cbm/call`, headers: { returncode: true }, form: { outputConcepts: ['bla'], outputUnits: ['seconds'] } }, (error, response) => expect(response.statusCode).toEqual(200));
       });
     });
   });

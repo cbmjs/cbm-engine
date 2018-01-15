@@ -12,11 +12,11 @@ const functionSchema = new mongoose.Schema({
   },
   args: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Node',
+    ref: 'Concept',
   }],
   returns: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Node',
+    ref: 'Concept',
   }],
   argsNames: [],
   argsUnits: [],

@@ -1,6 +1,6 @@
 const shell = require('shelljs');
 
-const Node = require('../models/node');
+const Concept = require('../models/concept');
 const Function = require('../models/function');
 const Relation = require('../models/relation');
 
@@ -120,10 +120,10 @@ function getParams(funcs) {
   return temp2;
 }
 
-async function addNodesToDB(params) {
+async function addConceptsToDB(params) {
   for (const param of params) {
     try {
-      await Node.create({
+      await Concept.create({
         name: param.name,
         desc: param.desc,
       });
@@ -136,27 +136,27 @@ async function addNodesToDB(params) {
 async function createRelations() {
   Relation.create({
     name: 'requiredBy',
-    desc: 'First node is required to define/give meaning to second node.',
+    desc: 'First concept is required to define/give meaning to second concept.',
   });
   Relation.create({
     name: 'representsA',
-    desc: 'First node is a different representation of second node',
+    desc: 'First concept is a different representation of second concept',
   });
   Relation.create({
     name: 'unitConversion',
-    desc: 'The two nodes are differents unit of measurement of the same thing.',
+    desc: 'The two concepts are differents unit of measurement of the same thing.',
   });
 }
 
 async function fixReferences() {
-  // fixNodeInFunc first
+  // fixConceptInFunc first
   try {
-    const nodes = await Node.find({});
+    const concepts = await Concept.find({});
     const funcs = await Function.find({});
     for (const func of funcs) {
-      for (const node of nodes) {
-        if (func.argsNames.length > func.args.length && func.argsNames.indexOf(node.name) > -1) func.args.push(node._id);
-        if (func.returnsNames.length > func.returns.length && func.returnsNames.indexOf(node.name) > -1) func.returns.push(node._id);
+      for (const concept of concepts) {
+        if (func.argsNames.length > func.args.length && func.argsNames.indexOf(concept.name) > -1) func.args.push(concept._id);
+        if (func.returnsNames.length > func.returns.length && func.returnsNames.indexOf(concept.name) > -1) func.returns.push(concept._id);
       }
       try {
         await func.save();
@@ -167,28 +167,28 @@ async function fixReferences() {
   } catch (error) {
     console.error(error);
   }
-  // fixFuncInNode
+  // fixFuncInConcept
   try {
-    const nodes = await Node.find({});
+    const concepts = await Concept.find({});
     const funcs = await Function.find({});
-    for (const node of nodes) {
+    for (const concept of concepts) {
       for (const func of funcs) {
         for (let i = 0; i < func.argsNames.length; i += 1) {
-          if (func.argsNames[i] === node.name) {
-            node.func_arg.push({ id: func._id, name: func.name, unitType: func.argsUnits[i] });
-            node.units.push(func.argsUnits[i]);
+          if (func.argsNames[i] === concept.name) {
+            concept.func_arg.push({ id: func._id, name: func.name, unitType: func.argsUnits[i] });
+            concept.units.push(func.argsUnits[i]);
           }
         }
         for (let i = 0; i < func.returnsNames.length; i += 1) {
-          if (func.returnsNames[i] === node.name) {
-            node.func_res.push({ id: func._id, name: func.name, unitType: func.returnsUnits[i] });
-            node.units.push(func.returnsUnits[i]);
+          if (func.returnsNames[i] === concept.name) {
+            concept.func_res.push({ id: func._id, name: func.name, unitType: func.returnsUnits[i] });
+            concept.units.push(func.returnsUnits[i]);
           }
         }
       }
       let tmp;
       let tmpKey = [];
-      tmp = node.func_arg.filter((arg) => {
+      tmp = concept.func_arg.filter((arg) => {
         const key = `${arg.name}|${arg.unitType}`;
         if (!tmpKey[key]) {
           tmpKey[key] = true;
@@ -196,10 +196,10 @@ async function fixReferences() {
         }
         return false;
       }, Object.create(null));
-      while (node.func_arg.length > 0) node.func_arg.pop();
-      tmp.forEach(el => node.func_arg.push(el));
+      while (concept.func_arg.length > 0) concept.func_arg.pop();
+      tmp.forEach(el => concept.func_arg.push(el));
       tmpKey = [];
-      tmp = node.func_res.filter((arg) => {
+      tmp = concept.func_res.filter((arg) => {
         const key = `${arg.name}|${arg.unitType}`;
         if (!tmpKey[key]) {
           tmpKey[key] = true;
@@ -207,15 +207,15 @@ async function fixReferences() {
         }
         return false;
       }, Object.create(null));
-      while (node.func_res.length > 0) node.func_res.pop();
-      tmp.forEach(el => node.func_res.push(el));
-      tmp = node.units.filter((el, pos, arr) => arr.indexOf(el) === pos);
+      while (concept.func_res.length > 0) concept.func_res.pop();
+      tmp.forEach(el => concept.func_res.push(el));
+      tmp = concept.units.filter((el, pos, arr) => arr.indexOf(el) === pos);
       tmp.forEach((el) => {
-        node.units.pull(el);
-        node.units.push(el);
+        concept.units.pull(el);
+        concept.units.push(el);
       });
       try {
-        await node.save();
+        await concept.save();
       } catch (error) {
         console.error(error);
       }
@@ -225,12 +225,12 @@ async function fixReferences() {
   }
   // fixRelations
   try {
-    const nodes = await Node.find({});
+    const concepts = await Concept.find({});
     const relation = await Relation.findOne({ name: 'unitConversion' });
     for (const connection of relation.connects) {
-      for (const node of nodes) {
-        if (connection.start.name.indexOf(node.name) > -1) connection.start.id = (node._id);
-        if (connection.end.name.indexOf(node.name) > -1) connection.end.id = (node._id);
+      for (const concept of concepts) {
+        if (connection.start.name.indexOf(concept.name) > -1) connection.start.id = (concept._id);
+        if (connection.end.name.indexOf(concept.name) > -1) connection.end.id = (concept._id);
       }
     }
     const tmpKey = [];
@@ -255,8 +255,8 @@ async function fixReferences() {
 
 async function fixTests() {
   try {
-    await Node.findOneAndRemove({ name: 'Napo' });
-    await Node.findOneAndRemove({ name: 'Mary' });
+    await Concept.findOneAndRemove({ name: 'Napo' });
+    await Concept.findOneAndRemove({ name: 'Mary' });
     await Function.findOneAndRemove({ name: 'testFunc' });
     await Relation.findOneAndRemove({ name: 'testRel' });
   } catch (error) {
@@ -270,7 +270,7 @@ async function fillWithFuncs() {
   const params = getParams(funcs);
   await createFuncJSON();
   await addFuncsToDB(funcProperties);
-  await addNodesToDB(params);
+  await addConceptsToDB(params);
   await createRelations();
   await fixReferences();
   console.log('DONE!');
