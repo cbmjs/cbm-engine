@@ -1,4 +1,4 @@
-# CallByMeaning [![Build Status](https://travis-ci.org/cbmjs/CallByMeaning.svg?branch=master)](https://travis-ci.org/cbmjs/CallByMeaning)
+# cbm-engine [![Build Status](https://travis-ci.org/cbmjs/cbm-engine.svg?branch=master)](https://travis-ci.org/cbmjs/cbm-engine)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
@@ -11,8 +11,8 @@ For a bit more information on what you can do, check the [docs](./docs/).
 ## Run locally
 
 ```bash
-git clone https://github.com/cbmjs/CallByMeaning.git
-cd CallByMeaning
+git clone https://github.com/cbmjs/cbm-engine.git cbm-engine
+cd cbm-engine
 npm install
 DB_HOST=mongodb://user:pass@host:port/callbymeaning npm start
 ```
@@ -26,8 +26,8 @@ If mongo is local, you only need to specify the name of the database by using th
 You can use Docker to run the web server too. Just clone the repository, change the `DB_HOST` accordingly [here](Dockerfile#L9) and then:
 
 ```bash
-git clone https://github.com/cbmjs/CallByMeaning.git
-cd CallByMeaning
+git clone https://github.com/cbmjs/cbm-engine.git cbm-engine
+cd cbm-engine
 docker build -t call-by-meaning .
 docker run -p 3000:3000 call-by-meaning
 ```

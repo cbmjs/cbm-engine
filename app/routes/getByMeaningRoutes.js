@@ -7,7 +7,7 @@ const router = new express.Router();
 const Function = require('../models/function');
 
 router.all('/', (req, res) => {
-  res.send('Hello. This is the path to search by meaning. Detailed information can be found <a href=https://github.com/cbmjs/CallByMeaning/>here</a>. Check <a href=../gbm/search>/search</a>');
+  res.send('Hello. This is the path to search by meaning. Detailed information can be found <a href=https://github.com/cbmjs/cbm-engine/>here</a>. Check <a href=../gbm/search>/search</a>');
 });
 
 router.get('/search', (req, res) => {

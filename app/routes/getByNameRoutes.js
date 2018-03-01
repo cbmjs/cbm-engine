@@ -9,7 +9,7 @@ const Function = require('../models/function');
 const Relation = require('../models/relation');
 
 router.all('/', (req, res) => {
-  res.send('Hello. This is the path to search by name. Detailed information can be found <a href=https://github.com/cbmjs/CallByMeaning/>here</a>.<br> Check <a href=./gbn/c>/c/</a><br>Check <a href=./gbn/f>/f/</a><br>Check <a href=./gbn/r>/r/</a>');
+  res.send('Hello. This is the path to search by name. Detailed information can be found <a href=https://github.com/cbmjs/cbm-engine/>here</a>.<br> Check <a href=./gbn/c>/c/</a><br>Check <a href=./gbn/f>/f/</a><br>Check <a href=./gbn/r>/r/</a>');
 });
 
 router.get('/c', (req, res) => {
