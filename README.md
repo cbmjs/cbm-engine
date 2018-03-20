@@ -1,6 +1,9 @@
-# cbm-engine [![Build Status](https://travis-ci.org/cbmjs/cbm-engine.svg?branch=master)](https://travis-ci.org/cbmjs/cbm-engine)
+# cbm-engine
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+> Code for the server-side of the CallByMeaning Project.
+
+[![Travis](https://img.shields.io/travis/cbmjs/cbm-engine.svg?style=flat-square&label=Travis+CI&logo=travis)](https://travis-ci.org/cbmjs/cbm-engine) [![license](https://img.shields.io/github/license/cbmjs/cbm-engine.svg?style=flat-square)](https://github.com/cbmjs/cbm-engine/blob/master/LICENSE)
+[![Deploy](https://img.shields.io/badge/%E2%AC%86%EF%B8%8FDeploy%20to-Heroku-6762a6.svg?style=flat-square)](https://heroku.com/deploy)
 
 ## Intro
 

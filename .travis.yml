@@ -1,8 +1,14 @@
-before_install:
-- npm update -g npm
+sudo: false
+os:
+  - linux
+  - osx
+language: node_js
+node_js:
+  - node
 cache:
   directories:
-  - node_modules
+    - ~/.yarn-cache
+    - node_modules
 deploy:
   provider: heroku
   api_key:
@@ -11,9 +17,9 @@ deploy:
   on:
     repo: cbmjs/cbm-engine
   skip_cleanup: true
-language: node_js
-node_js:
-- node
 notifications:
   email: false
-sudo: false
+before_install:
+  - npm i -g npm
+after_success:
+  - node_modules/.bin/codecov

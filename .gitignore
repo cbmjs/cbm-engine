@@ -4,6 +4,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
 
 # Runtime data
 pids
@@ -35,7 +36,6 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
-app/dev/seedDB.js
 
 # Typescript v1 declaration files
 typings/
@@ -45,9 +45,6 @@ typings/
 
 # Optional eslint cache
 .eslintcache
-
-# Optional eslint ignore
-.eslintignore
 
 # Optional REPL history
 .node_repl_history
