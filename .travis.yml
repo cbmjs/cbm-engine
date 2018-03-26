@@ -16,10 +16,11 @@ deploy:
   app: call-by-meaning
   on:
     repo: cbmjs/cbm-engine
+    condition: $TRAVIS_OS_NAME = osx
   skip_cleanup: true
 notifications:
   email: false
 before_install:
   - npm i -g npm
 after_success:
-  - node_modules/.bin/codecov
+  - codecov
