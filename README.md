@@ -1,7 +1,5 @@
 # cbm-engine
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/cbmjs/cbm-engine.svg)](https://greenkeeper.io/)
-
 > Server-side code of the cbmjs platform.
 
 [![Travis](https://img.shields.io/travis/cbmjs/cbm-engine.svg?style=flat-square&label=Travis+CI&logo=travis)](https://travis-ci.org/cbmjs/cbm-engine) [![license](https://img.shields.io/github/license/cbmjs/cbm-engine.svg?style=flat-square)](https://github.com/cbmjs/cbm-engine/blob/master/LICENSE)
