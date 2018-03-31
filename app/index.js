@@ -24,13 +24,13 @@ app.use('/docs', express.static(path.join(__dirname, '../docs')));
 app.use(morgan('dev', { stream: accessLogStream }));
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+	next();
 });
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello There :)</h1><br>Check <a href=./gbn>Get by name</a><br>Check <a href=./gbm>Get by meaning</a><br>Check <a href=./cbm>Call by meaning</a>');
+	res.send('<h1>Hello There :)</h1><br>Check <a href=./gbn>Get by name</a><br>Check <a href=./gbm>Get by meaning</a><br>Check <a href=./cbm>Call by meaning</a>');
 });
 
 app.use('/new', require('./routes/newRoutes'));
@@ -42,10 +42,10 @@ app.use('/cbm', require('./routes/callByMeaningRoutes'));
 app.all('*', (req, res) => res.status(404).send('Hmm... How did you end up here?'));
 
 const server = app.listen(port, () => {
-  console.log(`Server ${chalk.green('started')} at http://localhost:${port}. Have fun. 😀`);
+	console.log(`Server ${chalk.green('started')} at http://localhost:${port}. Have fun. 😀`);
 });
 
 exports.close = () => {
-  mongoose.connection.close();
-  server.close();
+	mongoose.connection.close();
+	server.close();
 };
