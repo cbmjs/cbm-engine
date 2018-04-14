@@ -7,7 +7,6 @@ node_js:
   - node
 cache:
   directories:
-    - ~/.yarn-cache
     - node_modules
 deploy:
   provider: heroku
@@ -22,3 +21,5 @@ notifications:
   email: false
 before_install:
   - npm i -g npm
+after_success:
+- nyc report --reporter=text-lcov > coverage.lcov && codecov

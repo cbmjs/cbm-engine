@@ -2,11 +2,11 @@
   "name": "cbm-engine",
   "version": "1.6.0",
   "description": "Code for the server-side of the cbmjs platform.",
-  "main": "app/index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node app/index.js",
-    "test": "eslint . && jest",
-    "initDB": "node app/dev/initDB.js"
+    "start": "node src/index.js",
+    "test": "xo && PORT=0 nyc ava",
+    "initDB": "node src/dev/initDB.js"
   },
   "repository": "github:cbmjs/cbm-engine",
   "author": {
@@ -27,10 +27,9 @@
     "chalk": "^2.3.2",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
-    "got": "^8.3.0",
-    "mathjs": "^4.0.1",
-    "mongodb": "^3.0.5",
-    "mongoose": "^5.0.12",
+    "mathjs": "^4.1.1",
+    "mongodb": "^3.0.6",
+    "mongoose": "^5.0.14",
     "morgan": "^1.9.0",
     "multer": "^1.3.0",
     "natural": "^0.5.6",
@@ -40,13 +39,16 @@
     "wordpos": "^1.1.6"
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.10.0",
-    "eslint-plugin-jest": "^21.15.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.7.0",
-    "jest": "^22.4.3",
-    "jsdoc": "^3.5.5"
+    "ava": "^0.25.0",
+    "codecov": "^3.0.0",
+    "jsdoc": "^3.5.5",
+    "nyc": "^11.6.0",
+    "supertest": "^3.0.0",
+    "xo": "^0.20.3"
+  },
+  "xo": {
+    "ignores": [
+      "library/**"
+    ]
   }
 }

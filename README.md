@@ -39,8 +39,6 @@ docker run -p 3000:3000 call-by-meaning
 
 Run tests via the command `npm test`
 
----
-
 ## License
 
 AGPL-3.0 © [Napoleon-Christos Oikonomou](https://iamnapo.me)

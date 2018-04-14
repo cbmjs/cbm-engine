@@ -5,7 +5,7 @@ const JSON = require('../dev/jsonfn');
 
 const router = new express.Router();
 
-const Function = require('../models/function');
+const Functionn = require('../models/function');
 const Relation = require('../models/relation');
 
 router.all('/', (req, res) => {
@@ -22,59 +22,70 @@ router.post('/call', (req, res) => {
 	req.body.inputVars = req.body.inputVars || [];
 	req.body.outputConcepts = req.body.outputConcepts || [];
 	req.body.outputUnits = req.body.outputUnits || [];
-	// eslint-disable-next-line eqeqeq
-	const returnCode = (req.headers.returncode == 'true');
-	const inputConcepts = req.body.inputConcepts instanceof Object ? req.body.inputConcepts : req.body.inputConcepts.split(' ').join('').split(',');
-	const inputUnits = req.body.inputUnits instanceof Object ? req.body.inputUnits : req.body.inputUnits.split(' ').join('').split(',');
-	let inputVars = req.body.inputVars instanceof Object ? req.body.inputVars : req.body.inputVars.split(' ').join('').split(',');
-	inputVars = inputVars.map((inputVar) => {
+	const returnCode = (JSON.parse(req.headers.returncode) === true);
+	const inputConcepts = Array.isArray(req.body.inputConcepts) ? req.body.inputConcepts : [req.body.inputConcepts];
+	const inputUnits = Array.isArray(req.body.inputUnits) ? req.body.inputUnits : [req.body.inputUnits];
+	let inputVars = Array.isArray(req.body.inputVars) ? req.body.inputVars : [req.body.inputVars];
+	inputVars = inputVars.map(inputVar => {
 		try {
 			return JSON.parse(inputVar);
 		} catch (e) {
 			return inputVar;
 		}
 	});
-	const outputConcepts = req.body.outputConcepts instanceof Object ? req.body.outputConcepts : req.body.outputConcepts.split(' ').join('').split(',');
-	const outputUnits = req.body.outputUnits instanceof Object ? req.body.outputUnits : req.body.outputUnits.split(' ').join('').split(',');
+	const outputConcepts = Array.isArray(req.body.outputConcepts) ? req.body.outputConcepts : [req.body.outputConcepts];
+	const outputUnits = Array.isArray(req.body.outputUnits) ? req.body.outputUnits : [req.body.outputUnits];
 
 	for (let i = 0; i < inputConcepts.length; i += 1) {
-		if (inputUnits[i] == null || inputUnits[i] === '-' || inputUnits[i] === '') inputUnits[i] = inputConcepts[i];
+		if (inputUnits[i] === null || inputUnits[i] === undefined || inputUnits[i] === '-' || inputUnits[i] === '') {
+			inputUnits[i] = inputConcepts[i];
+		}
 	}
 	for (let i = 0; i < outputConcepts.length; i += 1) {
-		if (outputUnits[i] == null || outputUnits[i] === '-' || outputUnits[i] === '') outputUnits[i] = outputConcepts[i];
+		if (outputUnits[i] === null || outputUnits[i] === undefined || outputUnits[i] === '-' || outputUnits[i] === '') {
+			outputUnits[i] = outputConcepts[i];
+		}
 	}
 
-	if (outputConcepts == null || outputConcepts.length === 0 || outputConcepts.length !== outputUnits.length) {
+	if (outputConcepts === null || outputConcepts === undefined || outputConcepts.length === 0 || outputConcepts.length !== outputUnits.length) {
 		return res.status(400).send('A function must have at least one output and every output must have its unit.');
 	}
 	if (inputConcepts.length !== inputUnits.length) {
 		return res.status(400).send('Input parameters must have the same length.');
 	}
-	request.post({ uri: `${req.protocol}://${req.get('host')}${req.originalUrl[0]}gbm/search/`, form: { inputConcepts, outputConcepts } }, (err, response, body) => {
-		if (err) console.error(err);
-		if (response.statusCode !== 200) return res.status(response.statusCode).send(body);
-		Function.find({ codeFile: { $in: JSON.parse(body).map(item => item.function) }, argsUnits: inputUnits, returnsUnits: outputUnits }).populate('results').exec((err2, funcs) => {
-			if (err2) console.error(err2);
+	request.post({uri: `${req.protocol}://${req.get('host')}${req.originalUrl[0]}gbm/search/`, form: {inputConcepts, outputConcepts}}, (err, response, body) => {
+		if (err) {
+			console.error(err);
+		}
+		if (response.statusCode !== 200) {
+			return res.status(response.statusCode).send(body);
+		}
+		Functionn.find({codeFile: {$in: JSON.parse(body).map(item => item.function)}, argsUnits: inputUnits, returnsUnits: outputUnits}).populate('results').exec((err2, funcs) => {
+			if (err2) {
+				console.error(err2);
+			}
 			if (funcs.length !== 0) {
-				const func = funcs[0]; // Only possibility
+				const [func] = funcs; // Only possibility
 				if (returnCode) {
 					const codeRes = {
 						function: func.codeFile,
-						description: func.desc,
+						description: func.desc
 					};
 					return res.json(codeRes);
 				}
-				// eslint-disable-next-line
-        const funcToRun = require('../../library/' + func.codeFile);
+				const funcToRun = require('../../library/' + func.codeFile);
 				const funcResult = funcToRun(...inputVars);
 				return res.send(JSON.stringify(funcResult));
 			}
-			Function.find({ codeFile: { $in: JSON.parse(body).map(item => item.function) } }).populate('results').exec((err3, funcs2) => {
-				if (err3) console.log(err3);
-				Relation.findOne({ name: 'unitConversion' }, (err4, relation) => {
-					if (err4) console.error(err4);
+			Functionn.find({codeFile: {$in: JSON.parse(body).map(item => item.function)}}).populate('results').exec((err3, funcs2) => {
+				if (err3) {
+					console.log(err3);
+				}
+				Relation.findOne({name: 'unitConversion'}, (err4, relation) => {
+					if (err4) {
+						console.error(err4);
+					}
 					let funcsChecked = 0;
-					// eslint-disable-next-line no-restricted-syntax
 					for (const func of funcs2) {
 						funcsChecked += 1;
 						const correctInputs = [];
@@ -90,11 +101,10 @@ router.post('/call', (req, res) => {
 										correctInputs[i] = inputVars[i] * math.to(argMath, inMath).toNumber();
 										foundInputRelation = true;
 									} catch (error) {
-										// eslint-disable-next-line no-restricted-syntax
 										for (const connection of relation.connects) {
 											if (connection.start.name === inputUnits[i] && connection.end.name === func.argsUnits[i]) {
 												foundInputRelation = true;
-												let mathRelation = connection.mathRelation;
+												let {mathRelation} = connection;
 												mathRelation = mathRelation.replace('start', JSON.stringify(inputVars[i]));
 												correctInputs[i] = math.eval(mathRelation);
 												break;
@@ -107,14 +117,13 @@ router.post('/call', (req, res) => {
 								}
 							}
 						}
-						// eslint-disable-next-line
-            let funcToRun = require('../../library/' + func.codeFile);
+						const funcToRun = require('../../library/' + func.codeFile);
 						const funcResult = funcToRun(...correctInputs);
 						if (func.returnsUnits[0] === outputUnits[0]) {
 							if (returnCode) {
 								const codeRes = {
 									function: func.codeFile,
-									desc: func.desc,
+									desc: func.desc
 								};
 								return res.json(codeRes);
 							}
@@ -129,23 +138,22 @@ router.post('/call', (req, res) => {
 							if (returnCode) {
 								const codeRes = {
 									function: func.codeFile,
-									description: func.desc,
+									description: func.desc
 								};
 								return res.json(codeRes);
 							}
 							return res.send(JSON.stringify(mathRelation));
 						} catch (error) {
-							// eslint-disable-next-line no-restricted-syntax
 							for (const connection of relation.connects) {
 								if (connection.start.name === outputUnits[0] && connection.end.name === func.returnsUnits[0]) {
 									foundOutputRelation = true;
-									let mathRelation = connection.mathRelation;
+									let {mathRelation} = connection;
 									mathRelation = mathRelation.replace('start', JSON.stringify(funcResult));
 									mathRelation = JSON.stringify(math.eval(mathRelation));
 									if (returnCode) {
 										const codeRes = {
 											function: func.codeFile,
-											description: func.desc,
+											description: func.desc
 										};
 										return res.json(codeRes);
 									}
@@ -156,7 +164,9 @@ router.post('/call', (req, res) => {
 						if (!foundOutputRelation) {
 							return res.status(418).send('There is a function whith these concepts, but given units can\'t be interpreted.');
 						}
-						if (funcsChecked === funcs.length) return res.status(418).send('Function not found in DB.');
+						if (funcsChecked === funcs.length) {
+							return res.status(418).send('Functionn not found in DB.');
+						}
 					}
 				});
 			});

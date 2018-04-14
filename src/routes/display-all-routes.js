@@ -1,9 +1,11 @@
+/* eslint-disable camelcase */
+
 const express = require('express');
 
 const router = new express.Router();
 
 const Concept = require('../models/concept');
-const Function = require('../models/function');
+const Functionn = require('../models/function');
 const Relation = require('../models/relation');
 
 router.all('/', (req, res) => {
@@ -12,14 +14,18 @@ router.all('/', (req, res) => {
 
 router.get('/concepts', (req, res) => {
 	Concept.find({}, (err, concepts) => {
-		if (err) console.error(err);
-		if (concepts.length === 0) return res.status(418).send('There aren\'t any concepts.');
+		if (err) {
+console.error(err);
+		}
+		if (concepts.length === 0) {
+			return res.status(418).send('There aren\'t any concepts.');
+		}
 		const temp = [];
-		concepts.forEach((concept) => {
+		concepts.forEach(concept => {
 			temp.push({
 				name: concept.name,
 				description: concept.desc,
-				units: concept.units,
+				units: concept.units
 			});
 		});
 		return res.json(temp);
@@ -28,8 +34,12 @@ router.get('/concepts', (req, res) => {
 
 router.get('/concepts/names', (req, res) => {
 	Concept.find({}, (err, concepts) => {
-		if (err) console.error(err);
-		if (concepts.length === 0) return res.status(418).send('There aren\'t any concepts.');
+		if (err) {
+console.error(err);
+		}
+		if (concepts.length === 0) {
+			return res.status(418).send('There aren\'t any concepts.');
+		}
 		const temp = [];
 		concepts.forEach(concept => temp.push(concept.name));
 		return res.json(temp);
@@ -37,15 +47,19 @@ router.get('/concepts/names', (req, res) => {
 });
 
 router.get('/functions', (req, res) => {
-	Function.find({}, (err, funcs) => {
-		if (err) console.error(err);
-		if (funcs.length === 0) return res.status(418).send('There aren\'t any functions.');
+	Functionn.find({}, (err, funcs) => {
+		if (err) {
+console.error(err);
+		}
+		if (funcs.length === 0) {
+			return res.status(418).send('There aren\'t any functions.');
+		}
 		const temp = [];
-		funcs.forEach((func) => {
+		funcs.forEach(func => {
 			temp.push({
 				name: func.name,
 				description: func.desc,
-				source_code: func.codeFile,
+				source_code: func.codeFile
 			});
 		});
 		return res.json(temp);
@@ -53,9 +67,13 @@ router.get('/functions', (req, res) => {
 });
 
 router.get('/functions/names', (req, res) => {
-	Function.find({}, (err, funcs) => {
-		if (err) console.error(err);
-		if (funcs.length === 0) return res.status(418).send('There aren\'t any functions.');
+	Functionn.find({}, (err, funcs) => {
+		if (err) {
+console.error(err);
+		}
+		if (funcs.length === 0) {
+			return res.status(418).send('There aren\'t any functions.');
+		}
 		const temp = [];
 		funcs.forEach(func => temp.push(func.name));
 		return res.json(temp);
@@ -63,9 +81,13 @@ router.get('/functions/names', (req, res) => {
 });
 
 router.get('/functions/descriptions', (req, res) => {
-	Function.find({}, (err, funcs) => {
-		if (err) console.error(err);
-		if (funcs.length === 0) return res.status(418).send('There aren\'t any functions.');
+	Functionn.find({}, (err, funcs) => {
+		if (err) {
+console.error(err);
+		}
+		if (funcs.length === 0) {
+			return res.status(418).send('There aren\'t any functions.');
+		}
 		const temp = [];
 		funcs.forEach(func => temp.push(func.desc));
 		return res.json(temp);
@@ -74,13 +96,17 @@ router.get('/functions/descriptions', (req, res) => {
 
 router.get('/relations', (req, res) => {
 	Relation.find({}, (err, relations) => {
-		if (err) console.error(err);
-		if (relations.length === 0) return res.status(418).send('There aren\'t any relations.');
+		if (err) {
+console.error(err);
+		}
+		if (relations.length === 0) {
+			return res.status(418).send('There aren\'t any relations.');
+		}
 		const temp = [];
-		relations.forEach((relation) => {
+		relations.forEach(relation => {
 			temp.push({
 				name: relation.name,
-				description: relation.desc,
+				description: relation.desc
 			});
 		});
 		return res.json(temp);

@@ -5,7 +5,7 @@ const router = new express.Router();
 const wordpos = new WordPOS();
 
 const Concept = require('../models/concept');
-const Function = require('../models/function');
+const Functionn = require('../models/function');
 const Relation = require('../models/relation');
 
 router.all('/', (req, res) => {
@@ -18,23 +18,38 @@ router.get('/c', (req, res) => {
 
 router.get('/c/:concept', (req, res) => {
 	const name = req.params.concept;
-	Concept.findOne({ name }, (err1, concept1) => {
-		if (err1) console.error(err1);
-		if (concept1) return res.json(concept1);
-		wordpos.lookup(name.replace('_', ' '), (result) => {
+	Concept.findOne({name}, (err1, concept1) => {
+		if (err1) {
+			console.error(err1);
+		}
+		if (concept1) {
+			return res.json(concept1);
+		}
+		wordpos.lookup(name.replace('_', ' '), result => {
 			let checked = 0;
-			if (result[0] == null) return res.status(418).send('Concept not found in DB.');
+			if (result[0] === null || result[0] === undefined) {
+				return res.status(418).send('Concept not found in DB.');
+			}
 			let allSynonyms = [];
-			result.forEach((res2) => { allSynonyms = allSynonyms.concat(res2.synonyms); });
+			result.forEach(res2 => {
+				allSynonyms = allSynonyms.concat(res2.synonyms);
+			});
 			allSynonyms = [...new Set(allSynonyms)];
-			// eslint-disable-next-line no-restricted-syntax
 			for (const concept2 of allSynonyms) {
-				if (res.headersSent) break;
-				Concept.findOne({ name: concept2.replace(/[^\w\d\s]/g, '') }, (err, concept3) => {
+				if (res.headersSent) {
+					break;
+				}
+				Concept.findOne({name: concept2.replace(/[^\w\d\s]/g, '')}, (err, concept3) => {
 					checked += 1;
-					if (err) console.error(err);
-					if (concept3) return res.json(concept3);
-					if (checked === allSynonyms.length && !res.headersSent) return res.status(418).send('Concept not found in DB.');
+					if (err) {
+						console.error(err);
+					}
+					if (concept3) {
+						return res.json(concept3);
+					}
+					if (checked === allSynonyms.length && !res.headersSent) {
+						return res.status(418).send('Concept not found in DB.');
+					}
 				});
 			}
 		});
@@ -46,10 +61,14 @@ router.get('/f', (req, res) => {
 });
 
 router.get('/f/:func', (req, res) => {
-	Function.findOne({ name: req.params.func }).populate('args').populate('results').exec((err, func) => {
-		if (err) console.error(err);
-		if (func) return res.json(func);
-		return res.status(418).send('Function not found in DB');
+	Functionn.findOne({name: req.params.func}).populate('args').populate('results').exec((err, func) => {
+		if (err) {
+			console.error(err);
+		}
+		if (func) {
+			return res.json(func);
+		}
+		return res.status(418).send('Functionn not found in DB');
 	});
 });
 
@@ -58,9 +77,13 @@ router.get('/r', (req, res) => {
 });
 
 router.get('/r/:rel', (req, res) => {
-	Relation.findOne({ name: req.params.rel }, (err, rel) => {
-		if (err) console.error(err);
-		if (rel) return res.json(rel);
+	Relation.findOne({name: req.params.rel}, (err, rel) => {
+		if (err) {
+			console.error(err);
+		}
+		if (rel) {
+			return res.json(rel);
+		}
 		return res.status(418).send('Relation not found in DB');
 	});
 });

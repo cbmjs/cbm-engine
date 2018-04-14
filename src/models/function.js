@@ -3,26 +3,26 @@ const mongoose = require('mongoose');
 const functionSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		unique: true,
+		unique: true
 	},
 	desc: String,
 	codeFile: {
 		type: String,
-		default: 'default.js',
+		default: 'default.js'
 	},
 	args: [{
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Concept',
+		ref: 'Concept'
 	}],
 	returns: [{
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Concept',
+		ref: 'Concept'
 	}],
 	argsNames: [],
 	argsUnits: [],
 	returnsNames: [],
-	returnsUnits: [],
-}, { usePushEach: true });
+	returnsUnits: []
+}, {usePushEach: true});
 
 mongoose.pluralize(null);
 const model = mongoose.model('Function', functionSchema);
