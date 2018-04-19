@@ -11,9 +11,9 @@ const port = typeof process.env.PORT === 'undefined' ? 3000 : parseInt(process.e
 
 mongoose.connect(process.env.DB_HOST || 'mongodb://localhost:27017/'.concat(process.env.DB || 'callbymeaning'));
 mongoose.Promise = global.Promise;
-if (!fs.existsSync(path.join(__dirname, '../logs/'))) {
-fs.mkdirSync(path.join(__dirname, '../logs/'));
-}
+try {
+	fs.mkdirSync(path.join(__dirname, '../logs/'));
+} catch (error) { /**/ }
 const accessLogStream = fs.createWriteStream(path.join(__dirname, '../logs/access.log'), {flags: 'a'});
 
 const app = express();
