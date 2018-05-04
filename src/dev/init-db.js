@@ -9,7 +9,7 @@ const url = 'mongodb://localhost:27017/callbymeaning';
  */
 MongoClient.connect(url, (err, db) => {
 	if (err) {
-console.error(err);
+		console.error(err);
 	}
 	const mongoCommand = {
 		copydb: 1,

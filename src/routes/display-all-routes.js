@@ -15,7 +15,7 @@ router.all('/', (req, res) => {
 router.get('/concepts', (req, res) => {
 	Concept.find({}, (err, concepts) => {
 		if (err) {
-console.error(err);
+			console.error(err);
 		}
 		if (concepts.length === 0) {
 			return res.status(418).send('There aren\'t any concepts.');
@@ -35,7 +35,7 @@ console.error(err);
 router.get('/concepts/names', (req, res) => {
 	Concept.find({}, (err, concepts) => {
 		if (err) {
-console.error(err);
+			console.error(err);
 		}
 		if (concepts.length === 0) {
 			return res.status(418).send('There aren\'t any concepts.');
@@ -49,7 +49,7 @@ console.error(err);
 router.get('/functions', (req, res) => {
 	Functionn.find({}, (err, funcs) => {
 		if (err) {
-console.error(err);
+			console.error(err);
 		}
 		if (funcs.length === 0) {
 			return res.status(418).send('There aren\'t any functions.');
@@ -69,7 +69,7 @@ console.error(err);
 router.get('/functions/names', (req, res) => {
 	Functionn.find({}, (err, funcs) => {
 		if (err) {
-console.error(err);
+			console.error(err);
 		}
 		if (funcs.length === 0) {
 			return res.status(418).send('There aren\'t any functions.');
@@ -83,7 +83,7 @@ console.error(err);
 router.get('/functions/descriptions', (req, res) => {
 	Functionn.find({}, (err, funcs) => {
 		if (err) {
-console.error(err);
+			console.error(err);
 		}
 		if (funcs.length === 0) {
 			return res.status(418).send('There aren\'t any functions.');
@@ -97,7 +97,7 @@ console.error(err);
 router.get('/relations', (req, res) => {
 	Relation.find({}, (err, relations) => {
 		if (err) {
-console.error(err);
+			console.error(err);
 		}
 		if (relations.length === 0) {
 			return res.status(418).send('There aren\'t any relations.');
