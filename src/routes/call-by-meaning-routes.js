@@ -22,7 +22,7 @@ router.post('/call', (req, res) => {
 	req.body.inputVars = req.body.inputVars || [];
 	req.body.outputConcepts = req.body.outputConcepts || [];
 	req.body.outputUnits = req.body.outputUnits || [];
-	const returnCode = (JSON.parse(req.headers.returncode) === true);
+	const returnCode = req.headers.returncode ? (JSON.parse(req.headers.returncode) === true) : false;
 	const inputConcepts = Array.isArray(req.body.inputConcepts) ? req.body.inputConcepts : [req.body.inputConcepts];
 	const inputUnits = Array.isArray(req.body.inputUnits) ? req.body.inputUnits : [req.body.inputUnits];
 	let inputVars = Array.isArray(req.body.inputVars) ? req.body.inputVars : [req.body.inputVars];
