@@ -6,7 +6,7 @@ const Concept = require('../models/concept');
 const Functionn = require('../models/function');
 const Relation = require('../models/relation');
 
-async function createFuncJSON() {
+function createFuncJSON() {
 	shell.exec('rm -f ./app/dev/funcs.json');
 	if (shell.exec('jsdoc ./library -X >> ./app/dev/funcs.json').code === 0) {
 		shell.echo('Success: funcs.json created.');
@@ -134,7 +134,7 @@ async function addConceptsToDB(params) {
 	}
 }
 
-async function createRelations() {
+function createRelations() {
 	Relation.create({
 		name: 'requiredBy',
 		desc: 'First concept is required to define/give meaning to second concept.'
@@ -281,10 +281,10 @@ async function fillWithFuncs() {
 	const funcs = getFunctions();
 	const funcProperties = getFuncProperties(funcs);
 	const params = getParams(funcs);
-	await createFuncJSON();
+	createFuncJSON();
 	await addFuncsToDB(funcProperties);
 	await addConceptsToDB(params);
-	await createRelations();
+	createRelations();
 	await fixReferences();
 	console.log('DONE!');
 }
