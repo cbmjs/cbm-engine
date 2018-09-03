@@ -29,7 +29,7 @@ router.post('/call', (req, res) => {
 	inputVars = inputVars.map(inputVar => {
 		try {
 			return JSON.parse(inputVar);
-		} catch (e) {
+		} catch (error) {
 			return inputVar;
 		}
 	});
