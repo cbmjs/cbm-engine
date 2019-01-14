@@ -2,53 +2,54 @@
   "name": "cbm-engine",
   "version": "1.6.0",
   "description": "Code for the server-side of the cbmjs platform.",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "test": "xo && PORT=0 nyc ava",
-    "initDB": "node src/dev/initDB.js"
+  "homepage": "https://github.com/cbmjs/cbm-engine#readme",
+  "bugs": {
+    "url": "https://github.com/cbmjs/cbm-engine/issues"
   },
   "repository": "github:cbmjs/cbm-engine",
+  "license": "AGPL-3.0",
   "author": {
     "name": "Napoleon-Christos Oikonomou",
     "email": "Napoleonoikon@gmail.com",
     "url": "https://iamnapo.me"
   },
-  "license": "AGPL-3.0",
-  "bugs": {
-    "url": "https://github.com/cbmjs/cbm-engine/issues"
-  },
-  "homepage": "https://github.com/cbmjs/cbm-engine#readme",
-  "engines": {
-    "node": ">=9"
+  "main": "src/index.js",
+  "scripts": {
+    "initDB": "node src/dev/initDB.js",
+    "start": "node src/index.js",
+    "test": "eslint . --fix && PORT=0 nyc ava"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
-    "chalk": "^2.4.1",
-    "dotenv": "^6.1.0",
+    "chalk": "^2.4.2",
+    "dotenv": "^6.2.0",
     "express": "^4.16.4",
-    "mathjs": "^5.2.2",
-    "mongodb": "^3.1.8",
-    "mongoose": "^5.3.6",
+    "mathjs": "^5.4.1",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.4.4",
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
-    "natural": "^0.6.2",
+    "natural": "^0.6.3",
     "request": "^2.88.0",
-    "shelljs": "^0.8.2",
+    "shelljs": "^0.8.3",
     "sync-request": "^6.0.0",
     "wordpos": "^1.2.0"
   },
   "devDependencies": {
-    "ava": "^1.0.1",
+    "ava": "^1.1.0",
+    "babel-eslint": "^10.0.1",
     "codecov": "^3.1.0",
+    "eslint": "^5.12.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-iamnapo": "^1.0.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.12.3",
     "jsdoc": "^3.5.5",
     "nyc": "^13.1.0",
-    "supertest": "^3.3.0",
-    "xo": "^0.23.0"
+    "supertest": "^3.3.0"
   },
-  "xo": {
-    "ignores": [
-      "library/**"
-    ]
+  "engines": {
+    "node": ">=9"
   }
 }
