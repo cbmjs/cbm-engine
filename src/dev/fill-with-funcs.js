@@ -1,5 +1,3 @@
-/* eslint-disable no-await-in-loop */
-
 const shell = require('shelljs');
 
 const Concept = require('../models/concept');
@@ -8,7 +6,7 @@ const Relation = require('../models/relation');
 
 function createFuncJSON() {
   shell.exec('rm -f ./app/dev/funcs.json');
-  if (shell.exec('jsdoc ./library -X >> ./app/dev/funcs.json').code === 0) {
+  if (shell.exec('jsdoc ./library -X >> ./src/dev/funcs.json').code === 0) {
     shell.echo('Success: funcs.json created.');
   } else {
     shell.echo('Error: Could not create .json');
@@ -20,9 +18,7 @@ function getFunctions() {
   const allFuncs = require('./funcs.json'); // Even those not exported
   const temp = [];
   allFuncs.forEach((func) => {
-    if (func.scope === 'static' && func.memberof === '_' && func.author) {
-      temp.push(func);
-    }
+    if (func.scope === 'static' && func.memberof === '_' && func.author) temp.push(func);
   });
   return temp;
 }
@@ -139,16 +135,16 @@ async function addConceptsToDB(params) {
 }
 
 
-function createRelations() {
-  Relation.create({
+async function createRelations() {
+  await Relation.create({
     name: 'requiredBy',
     desc: 'First concept is required to define/give meaning to second concept.',
   });
-  Relation.create({
+  await Relation.create({
     name: 'representsA',
     desc: 'First concept is a different representation of second concept',
   });
-  Relation.create({
+  await Relation.create({
     name: 'unitConversion',
     desc: 'The two concepts are differents unit of measurement of the same thing.',
   });
@@ -171,7 +167,7 @@ async function fixReferences() {
       });
       promises.push(func.save());
     });
-    await promises.save();
+    await Promise.all(promises);
   } catch (error) {
     console.error(error);
   }
@@ -285,13 +281,8 @@ async function fillWithFuncs() {
   createFuncJSON();
   await addFuncsToDB(funcProperties);
   await addConceptsToDB(params);
-  createRelations();
+  await createRelations();
   await fixReferences();
-  console.log('DONE!');
 }
 
-module.exports = {
-  fillWithFuncs,
-  fixReferences,
-  fixTests,
-};
+module.exports = { fillWithFuncs, fixReferences, fixTests };

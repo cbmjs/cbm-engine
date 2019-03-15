@@ -1,9 +1,7 @@
 import test from 'ava';
 import app from '../src';
 
-let request = require('supertest');
-
-request = request(app);
+const request = require('supertest')(app);
 
 test('GET /cbm returns status code 200', async (t) => {
   const response = await request.get('/cbm');

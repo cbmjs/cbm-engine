@@ -1,4 +1,4 @@
-/* eslint-disable consistent-return,import/no-dynamic-require,no-restricted-syntax */
+/* eslint-disable import/no-dynamic-require */
 const express = require('express');
 const request = require('request');
 const math = require('mathjs');
@@ -55,24 +55,18 @@ router.post('/call', (req, res) => {
   if (inputConcepts.length !== inputUnits.length) {
     return res.status(400).send('Input parameters must have the same length.');
   }
-  request.post({
+  return request.post({
     uri: `${req.protocol}://${req.get('host')}${req.originalUrl[0]}gbm/search/`,
     form: { inputConcepts, outputConcepts },
   }, (err, response, body) => {
-    if (err) {
-      console.error(err);
-    }
-    if (response.statusCode !== 200) {
-      return res.status(response.statusCode).send(body);
-    }
-    Functionn.find({
+    if (err) console.error(err);
+    if (response.statusCode !== 200) return res.status(response.statusCode).send(body);
+    return Functionn.find({
       codeFile: { $in: JSON.parse(body).map(item => item.function) },
       argsUnits: inputUnits,
       returnsUnits: outputUnits,
     }).populate('results').exec((err2, funcs) => {
-      if (err2) {
-        console.error(err2);
-      }
+      if (err2) console.error(err2);
       if (funcs.length !== 0) {
         const [func] = funcs; // Only possibility
         if (returnCode) {
@@ -86,14 +80,12 @@ router.post('/call', (req, res) => {
         const funcResult = funcToRun(...inputVars);
         return res.send(JSON.stringify(funcResult));
       }
-      Functionn.find({ codeFile: { $in: JSON.parse(body).map(item => item.function) } }).populate('results').exec((err3, funcs2) => {
+      return Functionn.find({ codeFile: { $in: JSON.parse(body).map(item => item.function) } }).populate('results').exec((err3, funcs2) => {
         if (err3) {
           console.log(err3);
         }
         Relation.findOne({ name: 'unitConversion' }, (err4, relation) => {
-          if (err4) {
-            console.error(err4);
-          }
+          if (err4) console.error(err4);
           let funcsChecked = 0;
           for (const func of funcs2) {
             funcsChecked += 1;
@@ -177,6 +169,7 @@ router.post('/call', (req, res) => {
               return res.status(418).send('Functionn not found in DB.');
             }
           }
+          return res.status(418).send('Functionn not found in DB.');
         });
       });
     });

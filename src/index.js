@@ -44,8 +44,6 @@ app.use('/cbm', require('./routes/call-by-meaning-routes'));
 
 app.all('*', (req, res) => res.status(404).send('Hmm... How did you end up here?'));
 
-const server = app.listen(port, () => {
-  console.log(`Server ${chalk.green('started')} at http://localhost:${port}. Have fun. 😀`);
-});
+const server = app.listen(port, () => console.log(`Server ${chalk.green('started')} at http://localhost:${port}. Have fun. 😀`));
 
 module.exports = server;

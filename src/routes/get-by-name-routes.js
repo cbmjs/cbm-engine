@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return,no-restricted-syntax */
 const express = require('express');
 const WordPOS = require('wordpos');
 
@@ -22,40 +21,26 @@ router.get('/c', (req, res) => {
 router.get('/c/:concept', (req, res) => {
   const name = req.params.concept;
   Concept.findOne({ name }, (err1, concept1) => {
-    if (err1) {
-      console.error(err1);
-    }
-    if (concept1) {
-      return res.json(concept1);
-    }
-    wordpos.lookup(name.replace('_', ' '), (result) => {
+    if (err1) console.error(err1);
+    if (concept1) return res.json(concept1);
+    return wordpos.lookup(name.replace('_', ' '), (result) => {
       let checked = 0;
-      if (result[0] === null || result[0] === undefined) {
-        return res.status(418).send('Concept not found in DB.');
-      }
+      if (result[0] === null || result[0] === undefined) return res.status(418).send('Concept not found in DB.');
       let allSynonyms = [];
-      result.forEach((res2) => {
-        allSynonyms = allSynonyms.concat(res2.synonyms);
-      });
+      result.forEach(res2 => allSynonyms = allSynonyms.concat(res2.synonyms));
       allSynonyms = [...new Set(allSynonyms)];
       const conceptcb = (err, concept3) => {
         checked += 1;
-        if (err) {
-          console.error(err);
-        }
-        if (concept3) {
-          return res.json(concept3);
-        }
-        if (checked === allSynonyms.length && !res.headersSent) {
-          return res.status(418).send('Concept not found in DB.');
-        }
+        if (err) console.error(err);
+        if (concept3) return res.json(concept3);
+        if (checked === allSynonyms.length && !res.headersSent) return res.status(418).send('Concept not found in DB.');
+        return null;
       };
       for (const concept2 of allSynonyms) {
-        if (res.headersSent) {
-          break;
-        }
+        if (res.headersSent) break;
         Concept.findOne({ name: concept2.replace(/[^\w\d\s]/g, '') }, conceptcb);
       }
+      return null;
     });
   });
 });
