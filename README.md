@@ -2,8 +2,8 @@
 
 > Server-side code of the cbmjs platform.
 
-[![travis](https://img.shields.io/travis/cbmjs/cbm-engine.svg?style=flat-square&logo=travis&label=)](https://travis-ci.org/cbmjs/cbm-engine) [![license](https://img.shields.io/github/license/cbmjs/cbm-engine.svg?style=flat-square)](./LICENSE)
-[![Deploy](https://img.shields.io/badge/%E2%AC%86%EF%B8%8FDeploy%20to-Heroku-6762a6.svg?style=flat-square)](https://heroku.com/deploy)
+[![travis](https://img.shields.io/travis/com/cbmjs/cbm-engine.svg?style=for-the-badge&logo=travis&label=)](https://travis-ci.org/cbmjs/cbm-engine) [![license](https://img.shields.io/github/license/cbmjs/cbm-engine.svg?style=for-the-badge)](./LICENSE)
+[![Deploy](https://img.shields.io/badge/%E2%AC%86%EF%B8%8FDeploy%20to-Heroku-6762a6.svg?style=for-the-badge)](https://heroku.com/deploy)
 
 ## Intro
 
