@@ -1,55 +1,56 @@
 {
-  "name": "cbm-engine",
-  "version": "1.6.0",
-  "description": "Code for the server-side of the cbmjs platform.",
-  "homepage": "https://github.com/cbmjs/cbm-engine#readme",
-  "bugs": {
-    "url": "https://github.com/cbmjs/cbm-engine/issues"
-  },
-  "repository": "github:cbmjs/cbm-engine",
-  "license": "AGPL-3.0",
-  "author": {
-    "name": "Napoleon-Christos Oikonomou",
-    "email": "Napoleonoikon@gmail.com",
-    "url": "https://iamnapo.me"
-  },
-  "main": "src/index.js",
-  "scripts": {
-    "initDB": "node src/dev/initDB.js",
-    "start": "node src/index.js",
-    "test": "eslint . --fix && PORT=0 nyc ava"
-  },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "chalk": "^2.4.2",
-    "dotenv": "^8.0.0",
-    "express": "^4.17.1",
-    "mathjs": "^6.0.0",
-    "mongodb": "^3.2.7",
-    "mongoose": "^5.5.14",
-    "morgan": "^1.9.1",
-    "multer": "^1.4.1",
-    "natural": "^0.6.3",
-    "request": "^2.88.0",
-    "shelljs": "^0.8.3",
-    "sync-request": "^6.1.0",
-    "wordpos": "^1.2.0"
-  },
-  "devDependencies": {
-    "ava": "^2.0.0",
-    "babel-eslint": "^10.0.1",
-    "codecov": "^3.5.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-iamnapo": "^1.0.4",
-    "eslint-plugin-import": "^2.17.3",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.13.0",
-    "jsdoc": "^3.6.2",
-    "nyc": "^14.1.1",
-    "supertest": "^4.0.2"
-  },
-  "engines": {
-    "node": ">=9"
-  }
+	"name": "cbm-engine",
+	"version": "1.6.0",
+	"description": "Code for the server-side of the cbmjs platform.",
+	"homepage": "https://github.com/cbmjs/cbm-engine#readme",
+	"bugs": {
+		"url": "https://github.com/cbmjs/cbm-engine/issues"
+	},
+	"repository": "github:cbmjs/cbm-engine",
+	"license": "AGPL-3.0",
+	"author": {
+		"name": "Napoleon-Christos Oikonomou",
+		"email": "Napoleonoikon@gmail.com",
+		"url": "https://iamnapo.me"
+	},
+	"main": "src/index.js",
+	"scripts": {
+		"initDB": "node src/dev/initDB.js",
+		"lint": "eslint .",
+		"start": "node src/index.js",
+		"test": "npm run lint && PORT=0 nyc ava"
+	},
+	"dependencies": {
+		"body-parser": "^1.19.0",
+		"chalk": "^3.0.0",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"mathjs": "^6.2.3",
+		"mongodb": "^3.3.3",
+		"mongoose": "^5.7.9",
+		"morgan": "^1.9.1",
+		"multer": "^1.4.2",
+		"natural": "^0.6.3",
+		"request": "^2.88.0",
+		"shelljs": "^0.8.3",
+		"sync-request": "^6.1.0",
+		"wordpos": "^1.2.0"
+	},
+	"devDependencies": {
+		"ava": "^2.4.0",
+		"codecov": "^3.6.1",
+		"eslint": "^6.6.0",
+		"eslint-config-airbnb": "^18.0.1",
+		"eslint-config-iamnapo": "^2.0.1",
+		"eslint-plugin-import": "^2.18.2",
+		"eslint-plugin-jsx-a11y": "^6.2.3",
+		"eslint-plugin-react": "^7.16.0",
+		"eslint-plugin-react-hooks": "^2.2.0",
+		"jsdoc": "^3.6.3",
+		"nyc": "^14.1.1",
+		"supertest": "^4.0.2"
+	},
+	"engines": {
+		"node": ">=9"
+	}
 }

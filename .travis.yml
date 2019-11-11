@@ -18,4 +18,4 @@ deploy:
 notifications:
   email: false
 after_success:
-- nyc report --reporter=text-lcov > coverage.lcov && codecov
+  - nyc report --reporter=text-lcov > coverage.lcov && codecov

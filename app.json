@@ -1,15 +1,15 @@
 {
-  "name": "cbm-engine",
-  "description": "Server code for the cbmjs project.",
-  "repository": "https://github.com/cbmjs/cbm-engine.git",
-  "env": {
-    "DB_HOST": {
-      "description": "The URL of the MongoDB instance to use."
-    }
-  },
-  "buildpacks": [
-    {
-      "url": "heroku/nodejs"
-    }
-  ]
+	"name": "cbm-engine",
+	"description": "Server code for the cbmjs project.",
+	"repository": "https://github.com/cbmjs/cbm-engine.git",
+	"env": {
+		"DB_HOST": {
+			"description": "The URL of the MongoDB instance to use."
+		}
+	},
+	"buildpacks": [
+		{
+			"url": "heroku/nodejs"
+		}
+	]
 }
