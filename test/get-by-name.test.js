@@ -1,7 +1,9 @@
-import test from "ava";
-import app from "../src";
+const test = require("ava");
+const supertest = require("supertest");
 
-const request = require("supertest")(app);
+const app = require("../src");
+
+const request = supertest(app);
 
 test("GET /gbn/ returns status code 200", async (t) => {
 	const response = await request.get("/gbn");
