@@ -1,0 +1,23 @@
+name: CI
+
+on: push
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn
+      - run: yarn test
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+      - name: Generate coverage report
+        run: yarn nyc report --reporter=text-lcov > coverage.lcov
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.lcov
+          yml: ./codecov.yml

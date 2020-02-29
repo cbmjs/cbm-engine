@@ -28,8 +28,8 @@ router.post("/search", (req, res) => {
 		}
 		if (funcs.length !== 0) {
 			const temp = [];
-			for (let t = 0; t < funcs.length; t += 1) {
-				temp.push({ function: funcs[t].codeFile, desc: funcs[t].desc });
+			for (const func of funcs) {
+				temp.push({ function: func.codeFile, desc: func.desc });
 			}
 			return res.json(temp);
 		}

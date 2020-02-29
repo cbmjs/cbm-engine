@@ -2,7 +2,7 @@
 
 > Server-side code of the cbmjs platform.
 
-[![travis](https://img.shields.io/travis/com/cbmjs/cbm-engine.svg?style=for-the-badge&logo=travis&label=)](https://travis-ci.org/cbmjs/cbm-engine) [![license](https://img.shields.io/github/license/cbmjs/cbm-engine.svg?style=for-the-badge)](./LICENSE)
+[![build](https://img.shields.io/github/workflow/status/cbmjs/cbm-engine/CI?style=for-the-badge&logo=github&label=)](https://github.com/cbmjs/cbm-engine/actions) [![license](https://img.shields.io/github/license/cbmjs/cbm-engine.svg?style=for-the-badge)](./LICENSE)
 [![Deploy](https://img.shields.io/badge/%E2%AC%86%EF%B8%8FDeploy%20to-Heroku-6762a6.svg?style=for-the-badge)](https://heroku.com/deploy)
 
 ## Intro
@@ -16,8 +16,8 @@ For a bit more information on what you can do, check the [docs](./docs/).
 ```bash
 git clone https://github.com/cbmjs/cbm-engine.git cbm-engine
 cd cbm-engine
-npm install
-DB_HOST=mongodb://user:pass@host:port/callbymeaning npm start
+yarn
+DB_HOST=mongodb://user:pass@host:port/callbymeaning yarn start
 ```
 
 Default host is `http://localhost` and port is 3000 but you can change that by specifying a PORT env variable.
@@ -37,7 +37,7 @@ docker run -p 3000:3000 call-by-meaning
 
 ## Unit Tests
 
-Run tests via the command `npm test`
+Run tests via the command `yarn test`
 
 ## License
 

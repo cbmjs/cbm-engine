@@ -158,10 +158,10 @@ async function fixReferences() {
 		const promises = [];
 		funcs.forEach((func) => {
 			concepts.forEach((concept) => {
-				if (func.argsNames.length > func.args.length && func.argsNames.indexOf(concept.name) > -1) {
+				if (func.argsNames.length > func.args.length && func.argsNames.includes(concept.name)) {
 					func.args.push(concept._id);
 				}
-				if (func.returnsNames.length > func.returns.length && func.returnsNames.indexOf(concept.name) > -1) {
+				if (func.returnsNames.length > func.returns.length && func.returnsNames.includes(concept.name)) {
 					func.returns.push(concept._id);
 				}
 			});
@@ -235,10 +235,10 @@ async function fixReferences() {
 		const relation = await Relation.findOne({ name: "unitConversion" });
 		relation.connects.forEach((connection) => {
 			concepts.forEach((concept) => {
-				if (connection.start.name.indexOf(concept.name) > -1) {
+				if (connection.start.name.includes(concept.name)) {
 					connection.start.id = (concept._id);
 				}
-				if (connection.end.name.indexOf(concept.name) > -1) {
+				if (connection.end.name.includes(concept.name)) {
 					connection.end.id = (concept._id);
 				}
 			});

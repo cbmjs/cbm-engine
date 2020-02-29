@@ -69,14 +69,14 @@ router.post("/function", upload.any(), (req, res) => {
 	let returnsUnits = req.body.returnsUnits || [];
 	returnsUnits = Array.isArray(returnsUnits) ? returnsUnits : [returnsUnits];
 	let codeFile;
-	for (let i = 0; i < argsNames.length; i += 1) {
+	for (const [i, element] of argsNames.entries()) {
 		if (argsUnits[i] === null || argsUnits[i] === undefined || argsUnits[i] === "-" || argsUnits[i] === "") {
-			argsUnits[i] = argsNames[i];
+			argsUnits[i] = element;
 		}
 	}
-	for (let i = 0; i < returnsNames.length; i += 1) {
+	for (const [i, element] of returnsNames.entries()) {
 		if (returnsUnits[i] === null || returnsUnits[i] === undefined || returnsUnits[i] === "-" || returnsUnits[i] === "") {
-			returnsUnits[i] = returnsNames[i];
+			returnsUnits[i] = element;
 		}
 	}
 	if (isAPI) {

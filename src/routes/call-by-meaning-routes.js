@@ -38,14 +38,14 @@ router.post("/call", (req, res) => {
 	const outputConcepts = Array.isArray(req.body.outputConcepts) ? req.body.outputConcepts : [req.body.outputConcepts];
 	const outputUnits = Array.isArray(req.body.outputUnits) ? req.body.outputUnits : [req.body.outputUnits];
 
-	for (let i = 0; i < inputConcepts.length; i += 1) {
+	for (const [i, element] of inputConcepts.entries()) {
 		if (inputUnits[i] === null || inputUnits[i] === undefined || inputUnits[i] === "-" || inputUnits[i] === "") {
-			inputUnits[i] = inputConcepts[i];
+			inputUnits[i] = element;
 		}
 	}
-	for (let i = 0; i < outputConcepts.length; i += 1) {
+	for (const [i, element] of outputConcepts.entries()) {
 		if (outputUnits[i] === null || outputUnits[i] === undefined || outputUnits[i] === "-" || outputUnits[i] === "") {
-			outputUnits[i] = outputConcepts[i];
+			outputUnits[i] = element;
 		}
 	}
 
@@ -91,19 +91,19 @@ router.post("/call", (req, res) => {
 						funcsChecked += 1;
 						const correctInputs = [];
 						if (inputUnits.length !== 0) {
-							for (let i = 0; i < inputUnits.length; i += 1) {
-								if (func.argsUnits[i] === inputUnits[i]) {
+							for (const [i, element] of inputUnits.entries()) {
+								if (func.argsUnits[i] === element) {
 									correctInputs[i] = inputVars[i];
 								} else {
 									let foundInputRelation = false;
 									try {
-										const inMath = math.unit(inputUnits[i]);
+										const inMath = math.unit(element);
 										const argMath = math.unit(func.argsUnits[i]);
 										correctInputs[i] = inputVars[i] * math.to(argMath, inMath).toNumber();
 										foundInputRelation = true;
 									} catch (error) {
 										for (const connection of relation.connects) {
-											if (connection.start.name === inputUnits[i] && connection.end.name === func.argsUnits[i]) {
+											if (connection.start.name === element && connection.end.name === func.argsUnits[i]) {
 												foundInputRelation = true;
 												let { mathRelation } = connection;
 												mathRelation = mathRelation.replace("start", JSON.stringify(inputVars[i]));

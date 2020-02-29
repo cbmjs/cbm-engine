@@ -35,7 +35,7 @@
 			if (value instanceof Function || typeof value === "function") {
 				fnBody = value.toString();
 
-				if (fnBody.length < 8 || fnBody.substring(0, 8) !== "function") { // This is ES6 Arrow Function
+				if (fnBody.length < 8 || fnBody.slice(0, 8) !== "function") { // This is ES6 Arrow Function
 					return `_NuFrRa_${fnBody}`;
 				}
 				return fnBody;
@@ -58,7 +58,7 @@
 				return value;
 			}
 
-			const prefix = value.substring(0, 8);
+			const prefix = value.slice(0, 8);
 
 			if (iso8061 && value.match(iso8061)) {
 				return new Date(value);
