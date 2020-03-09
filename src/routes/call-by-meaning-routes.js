@@ -113,7 +113,7 @@ router.post("/call", (req, res) => {
 										}
 									}
 									if (!foundInputRelation) {
-										return res.status(418).send("There is a function whith these concepts, but given units can't be interpreted.");
+										return res.status(418).send("There is a function whith these concepts, but given units can’t be interpreted.");
 									}
 								}
 							}
@@ -163,7 +163,7 @@ router.post("/call", (req, res) => {
 							}
 						}
 						if (!foundOutputRelation) {
-							return res.status(418).send("There is a function whith these concepts, but given units can't be interpreted.");
+							return res.status(418).send("There is a function whith these concepts, but given units can’t be interpreted.");
 						}
 						if (funcsChecked === funcs.length) {
 							return res.status(418).send("Functionn not found in DB.");

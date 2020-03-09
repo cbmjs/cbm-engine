@@ -43,7 +43,7 @@ test("POST /cbm/call can retrieve a function with given arguments if test is in 
 	t.is(response.body, eval(response.body));
 });
 
-test("POST /cbm/call can retrieve a function's code if returncode = true", async (t) => {
+test("POST /cbm/call can retrieve a function’s code if returncode = true", async (t) => {
 	const response = await request.post("/cbm/call").send({
 		outputConcepts: ["time"],
 		outputUnits: ["milliseconds"],
@@ -51,7 +51,7 @@ test("POST /cbm/call can retrieve a function's code if returncode = true", async
 	t.is(response.body.function, "now.js");
 });
 
-test("POST /cbm/call returns status 418 if test can't find a function in the DB", async (t) => {
+test("POST /cbm/call returns status 418 if test can’t find a function in the DB", async (t) => {
 	const response = await request.post("/cbm/call").send({
 		outputConcepts: ["bla"],
 		outputUnits: ["seconds"],

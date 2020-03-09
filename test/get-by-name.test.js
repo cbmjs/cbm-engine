@@ -25,12 +25,12 @@ test("GET /gbn/c something that exists", async (t) => {
 	t.is(response.body.name, "time");
 });
 
-test("GET /gbn/c something that doesn't exist, but a similar one does", async (t) => {
+test("GET /gbn/c something that doesn’t exist, but a similar one does", async (t) => {
 	const response = await request.get("/gbn/c/clock").set("Accept", "application/json");
 	t.is(response.body.name, "time");
 });
 
-test("GET /gbn/c something that doesn't exist has status code 418", async (t) => {
+test("GET /gbn/c something that doesn’t exist has status code 418", async (t) => {
 	const response = await request.get("/gbn/c/blalasda").set("Accept", "application/json");
 	t.is(response.statusCode, 418);
 });
@@ -45,7 +45,7 @@ test("GET /gbn/f something that exists", async (t) => {
 	t.is(response.body.name, "now");
 });
 
-test("GET /gbn/f something that doesn't exist has status code 418", async (t) => {
+test("GET /gbn/f something that doesn’t exist has status code 418", async (t) => {
 	const response = await request.get("/gbn/f/blalasda").set("Accept", "application/json");
 	t.is(response.statusCode, 418);
 });
@@ -60,7 +60,7 @@ test("GET /gbn/r something that exists", async (t) => {
 	t.is(response.body.name, "unitConversion");
 });
 
-test("GET /gbn/r something that doesn't exist has status code 418", async (t) => {
+test("GET /gbn/r something that doesn’t exist has status code 418", async (t) => {
 	const response = await request.get("/gbn/r/blalasda").set("Accept", "application/json");
 	t.is(response.statusCode, 418);
 });

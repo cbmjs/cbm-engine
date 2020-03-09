@@ -57,7 +57,7 @@ function getFuncProperties(funcs) {
 		temp.push({
 			name: func.longname.slice(2),
 			desc: replaceAll(func.description, "\n", " "),
-			codeFile: `./js/'${func.meta.filename}`,
+			codeFile: `./js/${func.meta.filename}`,
 			argsNames: getArgs(func).names,
 			argsUnits: getArgs(func).units,
 			returnsNames: getReturns(func).names,

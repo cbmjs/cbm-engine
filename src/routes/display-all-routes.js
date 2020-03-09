@@ -18,7 +18,7 @@ router.get("/concepts", (req, res) => {
 			console.error(err);
 		}
 		if (concepts.length === 0) {
-			return res.status(418).send("There aren't any concepts.");
+			return res.status(418).send("There aren’t any concepts.");
 		}
 		const temp = [];
 		concepts.forEach((concept) => {
@@ -38,7 +38,7 @@ router.get("/concepts/names", (req, res) => {
 			console.error(err);
 		}
 		if (concepts.length === 0) {
-			return res.status(418).send("There aren't any concepts.");
+			return res.status(418).send("There aren’t any concepts.");
 		}
 		const temp = [];
 		concepts.forEach((concept) => temp.push(concept.name));
@@ -52,7 +52,7 @@ router.get("/functions", (req, res) => {
 			console.error(err);
 		}
 		if (funcs.length === 0) {
-			return res.status(418).send("There aren't any functions.");
+			return res.status(418).send("There aren’t any functions.");
 		}
 		const temp = [];
 		funcs.forEach((func) => {
@@ -72,7 +72,7 @@ router.get("/functions/names", (req, res) => {
 			console.error(err);
 		}
 		if (funcs.length === 0) {
-			return res.status(418).send("There aren't any functions.");
+			return res.status(418).send("There aren’t any functions.");
 		}
 		const temp = [];
 		funcs.forEach((func) => temp.push(func.name));
@@ -86,7 +86,7 @@ router.get("/functions/descriptions", (req, res) => {
 			console.error(err);
 		}
 		if (funcs.length === 0) {
-			return res.status(418).send("There aren't any functions.");
+			return res.status(418).send("There aren’t any functions.");
 		}
 		const temp = [];
 		funcs.forEach((func) => temp.push(func.desc));
@@ -100,7 +100,7 @@ router.get("/relations", (req, res) => {
 			console.error(err);
 		}
 		if (relations.length === 0) {
-			return res.status(418).send("There aren't any relations.");
+			return res.status(418).send("There aren’t any relations.");
 		}
 		const temp = [];
 		relations.forEach((relation) => {

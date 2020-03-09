@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/string-content */
 /* eslint-disable consistent-return */
 const fs = require("fs");
 const path = require("path");

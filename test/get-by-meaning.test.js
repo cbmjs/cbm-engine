@@ -30,7 +30,7 @@ test("POST /gbm/search/ returns a function if test exists", async (t) => {
 	t.is(response.body[0].function, "now.js");
 });
 
-test("POST /gbm/search/ returns returns status code 418 if test can't find a function", async (t) => {
+test("POST /gbm/search/ returns returns status code 418 if test can’t find a function", async (t) => {
 	const response = await request.post("/gbm/search").send({ outputConcepts: ["days"] }).set("accept", "json");
 	t.is(response.statusCode, 418);
 });
