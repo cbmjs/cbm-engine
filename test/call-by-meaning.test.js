@@ -1,60 +1,72 @@
+const http = require("http");
 const test = require("ava");
-const supertest = require("supertest");
+const got = require("got");
+const listen = require("test-listen");
+const url = require("url");
 
 const app = require("../src");
 
-const request = supertest(app);
+test.before(async (t) => {
+	t.context.server = http.createServer(app);
+	t.context.prefixUrl = await listen(t.context.server);
+	t.context.got = got.extend({ throwHttpErrors: false, prefixUrl: url.resolve(t.context.prefixUrl, "/cbm") });
+});
 
+test.after.always((t) => t.context.server.close());
 test("GET /cbm returns status code 200", async (t) => {
-	const response = await request.get("/cbm");
-	t.is(response.statusCode, 200);
+	const { statusCode } = await t.context.got("");
+	t.is(statusCode, 200);
 });
 
 test("GET /cbm/<everythingelse> returns status code 404", async (t) => {
-	const response = await request.get("/cbm/alsdlasd");
-	t.is(response.statusCode, 404);
+	const { statusCode } = await t.context.got("alsdlasd");
+	t.is(statusCode, 404);
 });
 
 test("GET /cbm/call returns status code 200", async (t) => {
-	const response = await request.get("/cbm/call");
-	t.is(response.statusCode, 200);
+	const { statusCode } = await t.context.got("call");
+	t.is(statusCode, 200);
 });
 
 test("GET /cbm/call<everythingelse> returns status code 404", async (t) => {
-	const response = await request.get("/cbm/call/alsdlasd");
-	t.is(response.statusCode, 404);
+	const { statusCode } = await t.context.got("call/alsdlasd");
+	t.is(statusCode, 404);
 });
 
 test("POST /cbm/call can retrieve a function with given arguments if test is in DB (with same units)", async (t) => {
-	const response = await request.post("/cbm/call").send({
+	const res = await t.context.got.post("call", { json: {
 		outputConcepts: ["time"],
 		outputUnits: ["milliseconds"],
-	}).set("accept", "json");
-	// eslint-disable-next-line no-eval
-	t.is(response.body, eval(response.body));
+	} }).json();
+	t.truthy(res);
 });
 
 test("POST /cbm/call can retrieve a function with given arguments if test is in DB (with different units)", async (t) => {
-	const response = await request.post("/cbm/call").send({
+	const res = await t.context.got.post("call", { json: {
 		outputConcepts: ["time"],
 		outputUnits: ["hours"],
-	}).set("accept", "json");
-	// eslint-disable-next-line no-eval
-	t.is(response.body, eval(response.body));
+	} }).json();
+	t.truthy(res);
 });
 
 test("POST /cbm/call can retrieve a function’s code if returncode = true", async (t) => {
-	const response = await request.post("/cbm/call").send({
-		outputConcepts: ["time"],
-		outputUnits: ["milliseconds"],
-	}).set("returnCode", "true").set("accept", "json");
-	t.is(response.body.function, "now.js");
+	const { function: func } = await t.context.got.post("call", {
+		json: {
+			outputConcepts: ["time"],
+			outputUnits: ["milliseconds"],
+		},
+		headers: { returnCode: true },
+	}).json();
+	t.is(func, "now.js");
 });
 
 test("POST /cbm/call returns status 418 if test can’t find a function in the DB", async (t) => {
-	const response = await request.post("/cbm/call").send({
-		outputConcepts: ["bla"],
-		outputUnits: ["seconds"],
-	}).set("returnCode", "true").set("accept", "json");
-	t.is(response.statusCode, 418);
+	const { statusCode } = await t.context.got.post("call", {
+		json: {
+			outputConcepts: ["bla"],
+			outputUnits: ["seconds"],
+		},
+		headers: { returnCode: true },
+	});
+	t.is(statusCode, 418);
 });

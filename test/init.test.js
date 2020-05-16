@@ -1,11 +1,20 @@
+const http = require("http");
 const test = require("ava");
-const supertest = require("supertest");
+const got = require("got");
+const listen = require("test-listen");
+const url = require("url");
 
 const app = require("../src");
 
-const request = supertest(app);
+test.before(async (t) => {
+	t.context.server = http.createServer(app);
+	t.context.prefixUrl = await listen(t.context.server);
+	t.context.got = got.extend({ throwHttpErrors: false, prefixUrl: url.resolve(t.context.prefixUrl, "/") });
+});
+
+test.after.always((t) => t.context.server.close());
 
 test("GET / returns status code 200", async (t) => {
-	const response = await request.get("/");
-	t.is(response.statusCode, 200);
+	const { statusCode } = await t.context.got("");
+	t.is(statusCode, 200);
 });

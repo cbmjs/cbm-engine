@@ -2,25 +2,35 @@ require("dotenv").config();
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 const chalk = require("chalk");
+const helmet = require("helmet");
 
-const port = typeof process.env.PORT === "undefined" ? 3000 : parseInt(process.env.PORT, 10);
+const mongooseOptions = {
+	useNewUrlParser: true,
+	useCreateIndex: true,
+	useFindAndModify: false,
+	poolSize: 50,
+	keepAlive: true,
+	keepAliveInitialDelay: 300000,
+	useUnifiedTopology: true,
+};
 
-mongoose.connect(process.env.DB_HOST || "mongodb://localhost:27017/".concat(process.env.DB || "callbymeaning"), {
-	useUnifiedTopology: true, useNewUrlParser: true });
-mongoose.Promise = global.Promise;
+mongoose
+	.connect(process.env.DB_HOST || "mongodb://localhost:27017/".concat(process.env.DB || "callbymeaning"), mongooseOptions)
+	.catch((error) => console.error(error.message));
+
 try {
 	fs.mkdirSync(path.join(__dirname, "../logs/"));
-} catch (error) { /**/ }
+} catch { /**/ }
 const accessLogStream = fs.createWriteStream(path.join(__dirname, "../logs/access.log"), { flags: "a" });
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(helmet());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use("/js", express.static(path.join(__dirname, "../library")));
 app.use("/internal", express.static(path.join(__dirname, "../library/internal")));
 app.use("/docs", express.static(path.join(__dirname, "../docs")));
@@ -45,6 +55,7 @@ app.use("/cbm", require("./routes/call-by-meaning-routes"));
 
 app.all("*", (req, res) => res.status(404).send("Hmm... How did you end up here?"));
 
-const server = app.listen(port, () => console.log(`Server ${chalk.green("started")} at http://localhost:${port}. Have fun. 😀`));
+const port = process.env.PORT || 3000;
+app.listen(port, () => (process.env.NODE_ENV !== "test") && console.log(`Server ${chalk.green("started")} at http://localhost:${port}. Have fun. 😀`));
 
-module.exports = server;
+module.exports = app;

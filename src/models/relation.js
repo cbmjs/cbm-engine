@@ -23,7 +23,7 @@ const relationSchema = new mongoose.Schema({
 		},
 		mathRelation: String,
 	}],
-}, { usePushEach: true });
+});
 
 mongoose.pluralize(null);
 const model = mongoose.model("Relation", relationSchema);

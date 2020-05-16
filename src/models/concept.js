@@ -6,7 +6,7 @@ const conceptSchema = new mongoose.Schema({
 	units: [],
 	func_arg: [{ id: { type: mongoose.Schema.Types.ObjectId, ref: "Function" }, name: String, unitType: String }],
 	func_res: [{ id: { type: mongoose.Schema.Types.ObjectId, ref: "Function" }, name: String, unitType: String }],
-}, { usePushEach: true });
+});
 
 mongoose.pluralize(null);
 const model = mongoose.model("Concept", conceptSchema);

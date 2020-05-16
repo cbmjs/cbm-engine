@@ -31,7 +31,7 @@ router.post("/call", (req, res) => {
 	inputVars = inputVars.map((inputVar) => {
 		try {
 			return JSON.parse(inputVar);
-		} catch (error) {
+		} catch {
 			return inputVar;
 		}
 	});
@@ -101,7 +101,7 @@ router.post("/call", (req, res) => {
 										const argMath = math.unit(func.argsUnits[i]);
 										correctInputs[i] = inputVars[i] * math.to(argMath, inMath).toNumber();
 										foundInputRelation = true;
-									} catch (error) {
+									} catch {
 										for (const connection of relation.connects) {
 											if (connection.start.name === element && connection.end.name === func.argsUnits[i]) {
 												foundInputRelation = true;
@@ -144,7 +144,7 @@ router.post("/call", (req, res) => {
 								return res.json(codeRes);
 							}
 							return res.send(JSON.stringify(mathRelation));
-						} catch (error) {
+						} catch {
 							for (const connection of relation.connects) {
 								if (connection.start.name === outputUnits[0] && connection.end.name === func.returnsUnits[0]) {
 									foundOutputRelation = true;

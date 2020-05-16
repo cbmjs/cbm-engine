@@ -22,7 +22,7 @@ const functionSchema = new mongoose.Schema({
 	argsUnits: [],
 	returnsNames: [],
 	returnsUnits: [],
-}, { usePushEach: true });
+});
 
 mongoose.pluralize(null);
 const model = mongoose.model("Function", functionSchema);
