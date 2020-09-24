@@ -2,12 +2,12 @@
 const express = require("express");
 const request = require("request");
 const math = require("mathjs");
+
 const JSON = require("../dev/jsonfn");
-
-const router = new express.Router();
-
 const Functionn = require("../models/function");
 const Relation = require("../models/relation");
+
+const router = new express.Router();
 
 router.all("/", (req, res) => {
 	res.send("Hello. This is the path to call a function by meaning. Detailed information can"

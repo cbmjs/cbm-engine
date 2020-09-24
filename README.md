@@ -16,8 +16,8 @@ For a bit more information on what you can do, check the [docs](./docs/).
 ```bash
 git clone https://github.com/cbmjs/cbm-engine.git cbm-engine
 cd cbm-engine
-yarn
-DB_HOST=mongodb://user:pass@host:port/callbymeaning yarn start
+npm i
+DB_HOST=mongodb://user:pass@host:port/callbymeaning npm start
 ```
 
 Default host is `http://localhost` and port is 3000 but you can change that by specifying a PORT env variable.

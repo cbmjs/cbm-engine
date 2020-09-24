@@ -134,7 +134,6 @@ async function addConceptsToDB(params) {
 	}
 }
 
-
 async function createRelations() {
 	await Relation.create({
 		name: "requiredBy",

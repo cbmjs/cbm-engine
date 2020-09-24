@@ -1,10 +1,10 @@
 const express = require("express");
 const request = require("request");
+
 const JSON = require("../dev/jsonfn");
+const Functionn = require("../models/function");
 
 const router = new express.Router();
-
-const Functionn = require("../models/function");
 
 router.all("/", (req, res) => {
 	res.send("Hello. This is the path to search by meaning. Detailed information can be found"

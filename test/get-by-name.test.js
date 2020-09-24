@@ -1,15 +1,15 @@
 const http = require("http");
+
 const test = require("ava");
 const got = require("got");
 const listen = require("test-listen");
-const url = require("url");
 
 const app = require("../src");
 
 test.before(async (t) => {
 	t.context.server = http.createServer(app);
 	t.context.prefixUrl = await listen(t.context.server);
-	t.context.got = got.extend({ throwHttpErrors: false, prefixUrl: url.resolve(t.context.prefixUrl, "/gbn") });
+	t.context.got = got.extend({ throwHttpErrors: false, prefixUrl: new URL("/cbn", t.context.prefixUrl).toString() });
 });
 
 test.after.always((t) => t.context.server.close());
