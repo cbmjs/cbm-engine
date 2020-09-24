@@ -9,7 +9,7 @@ const app = require("../src");
 test.before(async (t) => {
 	t.context.server = http.createServer(app);
 	t.context.prefixUrl = await listen(t.context.server);
-	t.context.got = got.extend({ throwHttpErrors: false, prefixUrl: new URL("/cbn", t.context.prefixUrl).toString() });
+	t.context.got = got.extend({ throwHttpErrors: false, prefixUrl: new URL("/gbn", t.context.prefixUrl).toString() });
 });
 
 test.after.always((t) => t.context.server.close());
