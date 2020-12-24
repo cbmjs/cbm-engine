@@ -27,7 +27,7 @@ router.get("/c/:concept", (req, res) => {
 			let checked = 0;
 			if (result[0] === null || result[0] === undefined) return res.status(418).send("Concept not found in DB.");
 			let allSynonyms = [];
-			result.forEach((res2) => allSynonyms = allSynonyms.concat(res2.synonyms));
+			result.forEach((res2) => { allSynonyms = allSynonyms.concat(res2.synonyms); });
 			allSynonyms = [...new Set(allSynonyms)];
 			const conceptcb = (err, concept3) => {
 				checked += 1;

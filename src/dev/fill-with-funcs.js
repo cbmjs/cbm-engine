@@ -30,7 +30,7 @@ function replaceAll(target, search, replacement) {
 function getArgs(func) {
 	const tempName = [];
 	const tempUnit = [];
-	if (func.params && func.params.length !== 0) {
+	if (func.params && func.params.length > 0) {
 		func.params.forEach((param) => {
 			tempName.push(param.name);
 			tempUnit.push(param.type.names[0]);
@@ -42,7 +42,7 @@ function getArgs(func) {
 function getReturns(func) {
 	const tempName = [];
 	const tempUnit = [];
-	if (func.returns && func.returns.length !== 0) {
+	if (func.returns && func.returns.length > 0) {
 		func.returns.forEach((returns) => {
 			tempName.push(func.author[0]);
 			tempUnit.push(returns.type.names[0]);
@@ -90,7 +90,7 @@ async function addFuncsToDB(funcProperties) {
 function getParams(funcs) {
 	const temp = [];
 	funcs.forEach((func) => {
-		if (func.params && func.params.length !== 0) {
+		if (func.params && func.params.length > 0) {
 			func.params.forEach((param) => {
 				temp.push({
 					name: param.name,
@@ -98,7 +98,7 @@ function getParams(funcs) {
 				});
 			});
 		}
-		if (func.returns && func.returns.length !== 0) {
+		if (func.returns && func.returns.length > 0) {
 			func.returns.forEach((returns) => {
 				temp.push({
 					name: func.author[0] || "return value",

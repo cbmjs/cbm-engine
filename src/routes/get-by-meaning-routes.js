@@ -26,7 +26,7 @@ router.post("/search", (req, res) => {
 		if (err) {
 			console.error(err);
 		}
-		if (funcs.length !== 0) {
+		if (funcs.length > 0) {
 			const temp = [];
 			for (const func of funcs) {
 				temp.push({ function: func.codeFile, desc: func.desc });
@@ -48,7 +48,7 @@ router.post("/search", (req, res) => {
 							if (err3) {
 								console.log(err);
 							}
-							if (funcs2.length !== 0) {
+							if (funcs2.length > 0) {
 								const temp = [];
 								for (let t = 0; t < funcs2.length; t += 1) {
 									temp.push({ function: funcs2[0].codeFile, desc: funcs[0].desc });
@@ -72,7 +72,7 @@ router.post("/search", (req, res) => {
 										if (err4) {
 											console.log(err4);
 										}
-										if (funcs2.length !== 0) {
+										if (funcs2.length > 0) {
 											const temp = [];
 											for (let t = 0; t < funcs2.length; t += 1) {
 												temp.push({ function: funcs2[0].codeFile, desc: funcs2[0].desc });

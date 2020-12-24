@@ -28,8 +28,8 @@
 *                 is converted into a Date object; otherwise, it is left as a String.
 */
 
-(function jsonfn(exports) {
-	exports.stringify = function stringify(obj) {
+(function (exports) {
+	exports.stringify = function (obj) {
 		return JSON.stringify(obj, (key, value) => {
 			let fnBody;
 			if (value instanceof Function || typeof value === "function") {
@@ -47,7 +47,7 @@
 		});
 	};
 
-	exports.parse = function parse(str, date2obj) {
+	exports.parse = function (str, date2obj) {
 		const iso8061 = date2obj ? /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/ : false;
 
 		return JSON.parse(str, (key, value) => {
@@ -78,7 +78,7 @@
 		});
 	};
 
-	exports.clone = function clone(obj, date2obj) {
+	exports.clone = function (obj, date2obj) {
 		return exports.parse(exports.stringify(obj), date2obj);
 	};
-}(exports));
+})(exports);

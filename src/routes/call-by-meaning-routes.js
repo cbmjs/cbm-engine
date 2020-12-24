@@ -67,7 +67,7 @@ router.post("/call", (req, res) => {
 			returnsUnits: outputUnits,
 		}).populate("results").exec((err2, funcs) => {
 			if (err2) console.error(err2);
-			if (funcs.length !== 0) {
+			if (funcs.length > 0) {
 				const [func] = funcs; // Only possibility
 				if (returnCode) {
 					const codeRes = {
@@ -90,7 +90,7 @@ router.post("/call", (req, res) => {
 					for (const func of funcs2) {
 						funcsChecked += 1;
 						const correctInputs = [];
-						if (inputUnits.length !== 0) {
+						if (inputUnits.length > 0) {
 							for (const [i, element] of inputUnits.entries()) {
 								if (func.argsUnits[i] === element) {
 									correctInputs[i] = inputVars[i];
