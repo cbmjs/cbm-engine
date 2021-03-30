@@ -29,64 +29,56 @@
 */
 
 (function (exports) {
-  'use strict';
+	exports.stringify = function (obj) {
+		return JSON.stringify(obj, (key, value) => {
+			let fnBody;
+			if (value instanceof Function || typeof value === "function") {
+				fnBody = value.toString();
 
-  exports.stringify = function (obj) {
+				if (fnBody.length < 8 || fnBody.slice(0, 8) !== "function") { // This is ES6 Arrow Function
+					return `_NuFrRa_${fnBody}`;
+				}
+				return fnBody;
+			}
+			if (value instanceof RegExp) {
+				return `_PxEgEr_${value}`;
+			}
+			return value;
+		});
+	};
 
-    return JSON.stringify(obj, function (key, value) {
-      var fnBody;
-      if (value instanceof Function || typeof value == 'function') {
+	exports.parse = function (str, date2obj) {
+		const iso8061 = date2obj ? /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/ : false;
 
+		return JSON.parse(str, (key, value) => {
+			if (typeof value !== "string") {
+				return value;
+			}
+			if (value.length < 8) {
+				return value;
+			}
 
-        fnBody = value.toString();
+			const prefix = value.slice(0, 8);
 
-        if (fnBody.length < 8 || fnBody.substring(0, 8) !== 'function') { //this is ES6 Arrow Function
-          return '_NuFrRa_' + fnBody;
-        }
-        return fnBody;
-      }
-      if (value instanceof RegExp) {
-        return '_PxEgEr_' + value;
-      }
-      return value;
-    });
-  };
+			if (iso8061 && iso8061.test(value)) {
+				return new Date(value);
+			}
+			/* eslint-disable no-new-func */
+			if (prefix === "function") {
+				return new Function(`(${value})`);
+			}
+			if (prefix === "_PxEgEr_") {
+				return new Function(value.slice(8));
+			}
+			if (prefix === "_NuFrRa_") {
+				return new Function(value.slice(8));
+			}
 
-  exports.parse = function (str, date2obj) {
+			return value;
+		});
+	};
 
-    var iso8061 = date2obj ? /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/ : false;
-
-    return JSON.parse(str, function (key, value) {
-      var prefix;
-
-      if (typeof value != 'string') {
-        return value;
-      }
-      if (value.length < 8) {
-        return value;
-      }
-
-      prefix = value.substring(0, 8);
-
-      if (iso8061 && value.match(iso8061)) {
-        return new Date(value);
-      }
-      if (prefix === 'function') {
-        return eval('(' + value + ')');
-      }
-      if (prefix === '_PxEgEr_') {
-        return eval(value.slice(8));
-      }
-      if (prefix === '_NuFrRa_') {
-        return eval(value.slice(8));
-      }
-
-      return value;
-    });
-  };
-
-  exports.clone = function (obj, date2obj) {
-    return exports.parse(exports.stringify(obj), date2obj);
-  };
-
-}(exports));
+	exports.clone = function (obj, date2obj) {
+		return exports.parse(exports.stringify(obj), date2obj);
+	};
+})(exports);

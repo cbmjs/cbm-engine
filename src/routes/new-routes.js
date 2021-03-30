@@ -49,7 +49,7 @@ router.post("/concept", (req, res) => {
 			if (err2) {
 				console.error(err2);
 			}
-			if (concept2.length > 0) {
+			if (concept2) {
 				return res.status(200).send("Concept added.");
 			}
 			return res.status(418).send("Something went wrong.");
@@ -123,7 +123,7 @@ router.post("/function", upload.any(), (req, res) => {
 			if (err2) {
 				console.error(err2);
 			}
-			if (func2.length > 0) {
+			if (func2) {
 				return res.status(200).send("Functionn added.");
 			}
 			return res.status(418).send("Something went wrong.");
@@ -161,7 +161,7 @@ router.post("/relation", (req, res) => {
 			if (err2) {
 				console.error(err2);
 			}
-			if (relation2.length > 0) {
+			if (relation2) {
 				return res.status(200).send("Relation added.");
 			}
 			return res.status(418).send("Something went wrong.");
