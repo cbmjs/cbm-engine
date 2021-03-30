@@ -36,7 +36,7 @@ router.post("/concept", (req, res) => {
 			console.error(err);
 		}
 		if (concept) {
-			concept.units = concept.units.concat(units);
+			concept.units = [...concept.units, ...units];
 			concept.markModified("units");
 			concept.save((err2) => {
 				if (err2) {
@@ -58,7 +58,6 @@ router.post("/concept", (req, res) => {
 });
 
 router.post("/function", upload.any(), (req, res) => {
-	const { name } = req.body;
 	const desc = req.body.desc || "";
 	const isAPI = req.body.isApi ? JSON.parse(req.body.isApi) : false;
 	let argsNames = req.body.argsNames || [];
@@ -81,7 +80,7 @@ router.post("/function", upload.any(), (req, res) => {
 		}
 	}
 	if (isAPI) {
-		codeFile = `${name}.js`;
+		codeFile = `${req.body.name}.js`;
 		const apiFunc = `const request = require('sync-request');\n\nmodule.exports = (...args) => {\nlet uri = '${
 			req.body.api_link}';\nconst argsToreplace = ${JSON.stringify(argsNames)};\nargsToreplace.forEach((el, index) ${
 			" "}=> { uri = uri.replace(el, args[index]); });\nconst res = request('GET', uri);\nreturn res.getBody('utf8');\n};`;
@@ -90,7 +89,7 @@ router.post("/function", upload.any(), (req, res) => {
 		codeFile = (req.files && req.files[0].originalname) ? req.files[0].originalname : "default.js";
 	}
 
-	Functionn.findOne({ name }, (err, func) => {
+	Functionn.findOne({ name: req.body.name }, (err, func) => {
 		if (err) {
 			console.error(err);
 		}
@@ -113,7 +112,7 @@ router.post("/function", upload.any(), (req, res) => {
 			return res.status(200).send("Functionn added.");
 		}
 		Functionn.create({
-			name,
+			name: req.body.name,
 			desc,
 			argsNames,
 			argsUnits,
@@ -144,7 +143,7 @@ router.post("/relation", (req, res) => {
 			console.error(err);
 		}
 		if (relation) {
-			relation.connects = relation.connects.concat(connects);
+			relation.connects = [...relation.connects, ...connects];
 			relation.markModified("connects");
 			relation.save((err2) => {
 				if (err2) {

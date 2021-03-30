@@ -17,9 +17,9 @@ function createFuncJSON() {
 function getFunctions() {
 	const allFuncs = require("./funcs.json"); // Even those not exported
 	const temp = [];
-	allFuncs.forEach((func) => {
+	for (const func of allFuncs) {
 		if (func.scope === "static" && func.memberof === "_" && func.author) temp.push(func);
-	});
+	}
 	return temp;
 }
 
@@ -31,10 +31,10 @@ function getArgs(func) {
 	const tempName = [];
 	const tempUnit = [];
 	if (func.params && func.params.length > 0) {
-		func.params.forEach((param) => {
+		for (const param of func.params) {
 			tempName.push(param.name);
 			tempUnit.push(param.type.names[0]);
-		});
+		}
 	}
 	return { names: tempName, units: tempUnit };
 }
@@ -43,17 +43,17 @@ function getReturns(func) {
 	const tempName = [];
 	const tempUnit = [];
 	if (func.returns && func.returns.length > 0) {
-		func.returns.forEach((returns) => {
+		for (const returns of func.returns) {
 			tempName.push(func.author[0]);
 			tempUnit.push(returns.type.names[0]);
-		});
+		}
 	}
 	return { names: tempName, units: tempUnit };
 }
 
 function getFuncProperties(funcs) {
 	const temp = [];
-	funcs.forEach((func) => {
+	for (const func of funcs) {
 		temp.push({
 			name: func.longname.slice(2),
 			desc: replaceAll(func.description, "\n", " "),
@@ -63,13 +63,13 @@ function getFuncProperties(funcs) {
 			returnsNames: getReturns(func).names,
 			returnsUnits: getReturns(func).units,
 		});
-	});
+	}
 	return temp;
 }
 
 async function addFuncsToDB(funcProperties) {
 	const promises = [];
-	funcProperties.forEach((func) => {
+	for (const func of funcProperties) {
 		promises.push(Functionn.create({
 			name: func.name,
 			desc: func.desc,
@@ -79,7 +79,7 @@ async function addFuncsToDB(funcProperties) {
 			returnsNames: func.returnsNames,
 			returnsUnits: func.returnsUnits,
 		}));
-	});
+	}
 	try {
 		await Promise.all(promises);
 	} catch (error) {
@@ -89,26 +89,26 @@ async function addFuncsToDB(funcProperties) {
 
 function getParams(funcs) {
 	const temp = [];
-	funcs.forEach((func) => {
+	for (const func of funcs) {
 		if (func.params && func.params.length > 0) {
-			func.params.forEach((param) => {
+			for (const param of func.params) {
 				temp.push({
 					name: param.name,
 					desc: param.description,
 				});
-			});
+			}
 		}
 		if (func.returns && func.returns.length > 0) {
-			func.returns.forEach((returns) => {
+			for (const returns of func.returns) {
 				temp.push({
 					name: func.author[0] || "return value",
 					desc: returns.description,
 				});
-			});
+			}
 		}
-	});
+	}
 	const names = new Set();
-	temp.forEach((param) => names.add(param.name));
+	for (const param of temp) names.add(param.name);
 	const temp2 = temp.filter((param) => {
 		if (names.has(param.name)) {
 			names.delete(param.name);
@@ -121,12 +121,12 @@ function getParams(funcs) {
 
 async function addConceptsToDB(params) {
 	const promises = [];
-	params.forEach((param) => {
+	for (const param of params) {
 		promises.push(Concept.create({
 			name: param.name,
 			desc: param.desc,
 		}));
-	});
+	}
 	try {
 		await Promise.all(promises);
 	} catch (error) {
@@ -155,17 +155,17 @@ async function fixReferences() {
 		const concepts = await Concept.find({});
 		const funcs = await Functionn.find({});
 		const promises = [];
-		funcs.forEach((func) => {
-			concepts.forEach((concept) => {
+		for (const func of funcs) {
+			for (const concept of concepts) {
 				if (func.argsNames.length > func.args.length && func.argsNames.includes(concept.name)) {
 					func.args.push(concept._id);
 				}
 				if (func.returnsNames.length > func.returns.length && func.returnsNames.includes(concept.name)) {
 					func.returns.push(concept._id);
 				}
-			});
+			}
 			promises.push(func.save());
-		});
+		}
 		await Promise.all(promises);
 	} catch (error) {
 		console.error(error);
@@ -175,8 +175,8 @@ async function fixReferences() {
 		const concepts = await Concept.find({});
 		const funcs = await Functionn.find({});
 		const promises2 = [];
-		concepts.forEach((concept) => {
-			funcs.forEach((func) => {
+		for (const concept of concepts) {
+			for (const func of funcs) {
 				for (let i = 0; i < func.argsNames.length; i += 1) {
 					if (func.argsNames[i] === concept.name) {
 						concept.func_arg.push({ id: func._id, name: func.name, unitType: func.argsUnits[i] });
@@ -189,7 +189,7 @@ async function fixReferences() {
 						concept.units.push(func.returnsUnits[i]);
 					}
 				}
-			});
+			}
 			let tmp;
 			let tmpKey = [];
 			tmp = concept.func_arg.filter((arg) => {
@@ -203,7 +203,7 @@ async function fixReferences() {
 			while (concept.func_arg.length > 0) {
 				concept.func_arg.pop();
 			}
-			tmp.forEach((el) => concept.func_arg.push(el));
+			for (const el of tmp) concept.func_arg.push(el);
 			tmpKey = [];
 			tmp = concept.func_res.filter((arg) => {
 				const key = `${arg.name}|${arg.unitType}`;
@@ -216,14 +216,14 @@ async function fixReferences() {
 			while (concept.func_res.length > 0) {
 				concept.func_res.pop();
 			}
-			tmp.forEach((el) => concept.func_res.push(el));
+			for (const el of tmp) concept.func_res.push(el);
 			tmp = concept.units.filter((el, pos, arr) => arr.indexOf(el) === pos);
-			tmp.forEach((el) => {
+			for (const el of tmp) {
 				concept.units.pull(el);
 				concept.units.push(el);
-			});
+			}
 			promises2.push(concept.save());
-		});
+		}
 		await Promise.all(promises2);
 	} catch (error) {
 		console.error(error);
@@ -232,16 +232,16 @@ async function fixReferences() {
 	try {
 		const concepts = await Concept.find({});
 		const relation = await Relation.findOne({ name: "unitConversion" });
-		relation.connects.forEach((connection) => {
-			concepts.forEach((concept) => {
+		for (const connection of relation.connects) {
+			for (const concept of concepts) {
 				if (connection.start.name.includes(concept.name)) {
 					connection.start.id = (concept._id);
 				}
 				if (connection.end.name.includes(concept.name)) {
 					connection.end.id = (concept._id);
 				}
-			});
-		});
+			}
+		}
 		const tmpKey = [];
 		relation.connects = relation.connects.filter((conn) => {
 			const key = `${conn.start}|${conn.end}|${conn.mathRelation}`;

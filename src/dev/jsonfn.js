@@ -60,7 +60,7 @@
 
 			const prefix = value.slice(0, 8);
 
-			if (iso8061 && value.match(iso8061)) {
+			if (iso8061 && iso8061.test(value)) {
 				return new Date(value);
 			}
 			/* eslint-disable no-new-func */
