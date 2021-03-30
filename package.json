@@ -1,6 +1,6 @@
 {
 	"name": "cbm-engine",
-	"version": "1.9.0",
+	"version": "1.9.2",
 	"description": "Code for the server-side of the cbmjs platform.",
 	"homepage": "https://github.com/cbmjs/cbm-engine#readme",
 	"bugs": {
