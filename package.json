@@ -43,7 +43,6 @@
 	},
 	"devDependencies": {
 		"ava": "^3.15.0",
-		"codecov": "^3.8.1",
 		"eslint": "^7.23.0",
 		"eslint-config-airbnb": "^18.2.1",
 		"eslint-config-iamnapo": "^13.0.0",

@@ -17,7 +17,3 @@ jobs:
           CI: true
       - name: Generate coverage report
         run: npm run generate-report
-      - uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.lcov
