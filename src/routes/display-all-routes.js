@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
-const express = require("express");
+import express from "express";
+
+import Concept from "../models/concept.js";
+import Functionn from "../models/function.js";
+import Relation from "../models/relation.js";
 
 const router = new express.Router();
-
-const Concept = require("../models/concept");
-const Functionn = require("../models/function");
-const Relation = require("../models/relation");
 
 router.all("/", (req, res) => {
 	res.send("Hello.<br> Check <a href=./all/concepts>concepts</a><br>Check <a href=./all/"
@@ -113,4 +113,4 @@ router.get("/relations", (req, res) => {
 	});
 });
 
-module.exports = router;
+export default router;

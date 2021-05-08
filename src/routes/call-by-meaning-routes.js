@@ -1,11 +1,14 @@
 /* eslint-disable import/no-dynamic-require */
-const express = require("express");
-const request = require("request");
-const math = require("mathjs");
+import { createRequire } from "node:module";
+import express from "express";
+import request from "request";
+import * as math from "mathjs";
 
-const JSON = require("../dev/jsonfn");
-const Functionn = require("../models/function");
-const Relation = require("../models/relation");
+import * as JSON from "../dev/jsonfn.js";
+import Functionn from "../models/function.js";
+import Relation from "../models/relation.js";
+
+const require = createRequire(import.meta.url);
 
 const router = new express.Router();
 
@@ -49,7 +52,12 @@ router.post("/call", (req, res) => {
 		}
 	}
 
-	if (outputConcepts === null || outputConcepts === undefined || outputConcepts.length === 0 || outputConcepts.length !== outputUnits.length) {
+	if (
+		outputConcepts === null
+		|| outputConcepts === undefined
+		|| outputConcepts.length === 0
+		|| outputConcepts.length !== outputUnits.length
+	) {
 		return res.status(400).send("A function must have at least one output and every output must have its unit.");
 	}
 	if (inputConcepts.length !== inputUnits.length) {
@@ -176,4 +184,4 @@ router.post("/call", (req, res) => {
 	});
 });
 
-module.exports = router;
+export default router;

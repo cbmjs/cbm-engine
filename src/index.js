@@ -1,12 +1,18 @@
-require("dotenv").config();
-const fs = require("fs");
-const path = require("path");
+import "dotenv/config";
+import { fileURLToPath } from "node:url";
+import fs from "node:fs";
+import path from "node:path";
+import express from "express";
+import mongoose from "mongoose";
+import morgan from "morgan";
+import chalk from "chalk";
+import helmet from "helmet";
 
-const express = require("express");
-const mongoose = require("mongoose");
-const morgan = require("morgan");
-const chalk = require("chalk");
-const helmet = require("helmet");
+import newRoutes from "./routes/new-routes.js";
+import displayAllRoutes from "./routes/display-all-routes.js";
+import getByNameRoutes from "./routes/get-by-name-routes.js";
+import getByMeaningRoutes from "./routes/get-by-meaning-routes.js";
+import callByMeaningRoutes from "./routes/call-by-meaning-routes.js";
 
 const mongooseOptions = {
 	useNewUrlParser: true,
@@ -23,18 +29,18 @@ mongoose
 	.catch((error) => console.error(error.message));
 
 try {
-	fs.mkdirSync(path.join(__dirname, "../logs/"));
+	fs.mkdirSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "../logs/"));
 } catch { /**/ }
-const accessLogStream = fs.createWriteStream(path.join(__dirname, "../logs/access.log"), { flags: "a" });
+const accessLogStream = fs.createWriteStream(path.join(path.dirname(fileURLToPath(import.meta.url)), "../logs/access.log"), { flags: "a" });
 
 const app = express();
 
 app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use("/js", express.static(path.join(__dirname, "../library")));
-app.use("/internal", express.static(path.join(__dirname, "../library/internal")));
-app.use("/docs", express.static(path.join(__dirname, "../docs")));
+app.use("/js", express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "../library")));
+app.use("/internal", express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "../library/internal")));
+app.use("/docs", express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), "../docs")));
 app.use(morgan("dev", { stream: accessLogStream }));
 
 app.use((req, res, next) => {
@@ -48,15 +54,15 @@ app.get("/", (req, res) => {
   + "Check <a href=./gbm>Get by meaning</a><br>Check <a href=./cbm>Call by meaning</a>");
 });
 
-app.use("/new", require("./routes/new-routes"));
-app.use("/all", require("./routes/display-all-routes"));
-app.use("/gbn", require("./routes/get-by-name-routes"));
-app.use("/gbm", require("./routes/get-by-meaning-routes"));
-app.use("/cbm", require("./routes/call-by-meaning-routes"));
+app.use("/new", newRoutes);
+app.use("/all", displayAllRoutes);
+app.use("/gbn", getByNameRoutes);
+app.use("/gbm", getByMeaningRoutes);
+app.use("/cbm", callByMeaningRoutes);
 
 app.all("*", (req, res) => res.status(404).send("Hmm... How did you end up here?"));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => (process.env.NODE_ENV !== "test") && console.log(`Server ${chalk.green("started")} at http://localhost:${port}. Have fun. 😀`));
 
-module.exports = app;
+export default app;

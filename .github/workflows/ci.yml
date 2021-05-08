@@ -1,19 +1,23 @@
-name: CI
+name: ci
 
 on: push
 
 jobs:
-  build-and-test:
+  ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v2
         with:
-          node-version: 12
-      - run: npm i
-      - run: npm test
+          node-version: 16
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+
+      - name: 🧪 Run test script
+        run: npm test
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
-          CI: true
-      - name: Generate coverage report
-        run: npm run generate-report

@@ -1,8 +1,9 @@
-const shell = require("shelljs");
+import { createRequire } from "node:module";
+import shell from "shelljs";
 
-const Concept = require("../models/concept");
-const Functionn = require("../models/function");
-const Relation = require("../models/relation");
+import Concept from "../models/concept.js";
+import Functionn from "../models/function.js";
+import Relation from "../models/relation.js";
 
 function createFuncJSON() {
 	shell.exec("rm -f ./app/dev/funcs.json");
@@ -15,6 +16,7 @@ function createFuncJSON() {
 }
 
 function getFunctions() {
+	const require = createRequire(import.meta.url);
 	const allFuncs = require("./funcs.json"); // Even those not exported
 	const temp = [];
 	for (const func of allFuncs) {
@@ -149,7 +151,7 @@ async function createRelations() {
 	});
 }
 
-async function fixReferences() {
+export async function fixReferences() {
 	// FixConceptInFunc first
 	try {
 		const concepts = await Concept.find({});
@@ -262,7 +264,7 @@ async function fixReferences() {
 	}
 }
 
-async function fixTests() {
+export async function fixTests() {
 	try {
 		await Concept.findOneAndRemove({ name: "Napo" });
 		await Concept.findOneAndRemove({ name: "Mary" });
@@ -273,7 +275,7 @@ async function fixTests() {
 	}
 }
 
-async function fillWithFuncs() {
+export async function fillWithFuncs() {
 	const funcs = getFunctions();
 	const funcProperties = getFuncProperties(funcs);
 	const params = getParams(funcs);
@@ -283,5 +285,3 @@ async function fillWithFuncs() {
 	await createRelations();
 	await fixReferences();
 }
-
-module.exports = { fillWithFuncs, fixReferences, fixTests };

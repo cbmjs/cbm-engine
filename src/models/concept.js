@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const conceptSchema = new mongoose.Schema({
 	name: { type: String, unique: true },
@@ -9,6 +9,5 @@ const conceptSchema = new mongoose.Schema({
 });
 
 mongoose.pluralize(null);
-const model = mongoose.model("Concept", conceptSchema);
 
-module.exports = model;
+export default mongoose.model("Concept", conceptSchema);

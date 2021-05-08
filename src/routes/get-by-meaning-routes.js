@@ -1,8 +1,8 @@
-const express = require("express");
-const request = require("request");
+import express from "express";
+import request from "request";
 
-const JSON = require("../dev/jsonfn");
-const Functionn = require("../models/function");
+import * as JSON from "../dev/jsonfn.js";
+import Functionn from "../models/function.js";
 
 const router = new express.Router();
 
@@ -94,4 +94,4 @@ router.post("/search", (req, res) => {
 	});
 });
 
-module.exports = router;
+export default router;

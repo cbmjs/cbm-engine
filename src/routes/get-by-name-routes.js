@@ -1,12 +1,12 @@
-const express = require("express");
-const WordPOS = require("wordpos");
+import express from "express";
+import WordPOS from "wordpos";
+
+import Concept from "../models/concept.js";
+import Functionn from "../models/function.js";
+import Relation from "../models/relation.js";
 
 const router = new express.Router();
 const wordpos = new WordPOS();
-
-const Concept = require("../models/concept");
-const Functionn = require("../models/function");
-const Relation = require("../models/relation");
 
 router.all("/", (req, res) => {
 	res.send("Hello. This is the path to search by name. Detailed information can be found"
@@ -77,4 +77,4 @@ router.get("/r/:rel", (req, res) => {
 	});
 });
 
-module.exports = router;
+export default router;

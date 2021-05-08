@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const relationSchema = new mongoose.Schema({
 	name: {
@@ -26,6 +26,5 @@ const relationSchema = new mongoose.Schema({
 });
 
 mongoose.pluralize(null);
-const model = mongoose.model("Relation", relationSchema);
 
-module.exports = model;
+export default mongoose.model("Relation", relationSchema);

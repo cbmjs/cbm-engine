@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const functionSchema = new mongoose.Schema({
 	name: {
@@ -25,6 +25,5 @@ const functionSchema = new mongoose.Schema({
 });
 
 mongoose.pluralize(null);
-const model = mongoose.model("Function", functionSchema);
 
-module.exports = model;
+export default mongoose.model("Function", functionSchema);

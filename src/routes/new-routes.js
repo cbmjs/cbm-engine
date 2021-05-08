@@ -1,26 +1,26 @@
 /* eslint-disable unicorn/string-content */
 /* eslint-disable consistent-return */
-const fs = require("fs");
-const path = require("path");
+import { fileURLToPath } from "node:url";
+import fs from "node:fs";
+import path from "node:path";
+import express from "express";
+import multer from "multer";
 
-const express = require("express");
-const multer = require("multer");
+import Concept from "../models/concept.js";
+import Functionn from "../models/function.js";
+import Relation from "../models/relation.js";
+import { fixReferences, fixTests } from "../dev/fill-with-funcs.js";
 
 const router = new express.Router();
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, path.join(__dirname, "../../library"));
+		cb(null, path.join(path.dirname(fileURLToPath(import.meta.url)), "../../library"));
 	},
 	filename: (req, file, cb) => {
 		cb(null, file.originalname);
 	},
 });
 const upload = multer({ storage });
-
-const Concept = require("../models/concept");
-const Functionn = require("../models/function");
-const Relation = require("../models/relation");
-const fix = require("../dev/fill-with-funcs");
 
 router.all("/", (req, res) => {
 	res.send("Hello. From this path you can add new thing to the DB by sending a POST request to /concept, /function or /relation.");
@@ -84,7 +84,7 @@ router.post("/function", upload.any(), (req, res) => {
 		const apiFunc = `const request = require('sync-request');\n\nmodule.exports = (...args) => {\nlet uri = '${
 			req.body.api_link}';\nconst argsToreplace = ${JSON.stringify(argsNames)};\nargsToreplace.forEach((el, index) ${
 			" "}=> { uri = uri.replace(el, args[index]); });\nconst res = request('GET', uri);\nreturn res.getBody('utf8');\n};`;
-		fs.writeFileSync(path.join(__dirname, "../../library", codeFile), apiFunc);
+		fs.writeFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "../../library", codeFile), apiFunc);
 	} else {
 		codeFile = (req.files && req.files[0].originalname) ? req.files[0].originalname : "default.js";
 	}
@@ -172,15 +172,15 @@ router.post("/relation", (req, res) => {
 router.post("/fix", async (req, res) => {
 	if (req.body.command === "fixit") {
 		try {
-			await fix.fixReferences();
+			await fixReferences();
 		} catch (error) {
 			console.error(error);
 		}
 	}
 	if (req.body.command === "fixtests") {
-		await fix.fixTests();
+		await fixTests();
 	}
 	return res.send("cool bro");
 });
 
-module.exports = router;
+export default router;
