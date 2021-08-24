@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import express from "express";
 
 import Concept from "../models/concept.js";

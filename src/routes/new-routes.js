@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/string-content */
 /* eslint-disable consistent-return */
 import { fileURLToPath } from "node:url";
 import fs from "node:fs";

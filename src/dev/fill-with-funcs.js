@@ -202,7 +202,7 @@ export async function fixReferences() {
 					return true;
 				}
 				return false;
-			}, Object.create(null));
+			});
 			while (concept.func_arg.length > 0) {
 				concept.func_arg.pop();
 			}
@@ -215,7 +215,7 @@ export async function fixReferences() {
 					return true;
 				}
 				return false;
-			}, Object.create(null));
+			});
 			while (concept.func_res.length > 0) {
 				concept.func_res.pop();
 			}
@@ -253,7 +253,7 @@ export async function fixReferences() {
 				return true;
 			}
 			return false;
-		}, Object.create(null));
+		});
 		relation.markModified("connects");
 		try {
 			await relation.save();
