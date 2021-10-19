@@ -15,23 +15,14 @@ import getByNameRoutes from "./routes/get-by-name-routes.js";
 import getByMeaningRoutes from "./routes/get-by-meaning-routes.js";
 import callByMeaningRoutes from "./routes/call-by-meaning-routes.js";
 
-const mongooseOptions = {
-	useNewUrlParser: true,
-	useCreateIndex: true,
-	useFindAndModify: false,
-	poolSize: 50,
-	keepAlive: true,
-	keepAliveInitialDelay: 300_000,
-	useUnifiedTopology: true,
-};
-
 mongoose
-	.connect(process.env.DB_HOST || "mongodb://localhost:27017/".concat(process.env.DB || "callbymeaning"), mongooseOptions)
+	.connect(process.env.DB_HOST || "mongodb://localhost:27017/".concat(process.env.DB || "callbymeaning"))
 	.catch((error) => console.error(error.message));
 
 try {
 	fs.mkdirSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "../logs/"));
 } catch { /**/ }
+
 const accessLogStream = fs.createWriteStream(path.join(path.dirname(fileURLToPath(import.meta.url)), "../logs/access.log"), { flags: "a" });
 
 const app = express();

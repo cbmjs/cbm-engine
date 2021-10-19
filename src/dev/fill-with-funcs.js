@@ -23,6 +23,7 @@ function getFunctions() {
 	for (const func of allFuncs) {
 		if (func.scope === "static" && func.memberof === "_" && func.author) temp.push(func);
 	}
+
 	return temp;
 }
 
@@ -39,6 +40,7 @@ function getArgs(func) {
 			tempUnit.push(param.type.names[0]);
 		}
 	}
+
 	return { names: tempName, units: tempUnit };
 }
 
@@ -51,6 +53,7 @@ function getReturns(func) {
 			tempUnit.push(returns.type.names[0]);
 		}
 	}
+
 	return { names: tempName, units: tempUnit };
 }
 
@@ -67,6 +70,7 @@ function getFuncProperties(funcs) {
 			returnsUnits: getReturns(func).units,
 		});
 	}
+
 	return temp;
 }
 
@@ -83,6 +87,7 @@ async function addFuncsToDB(funcProperties) {
 			returnsUnits: func.returnsUnits,
 		}));
 	}
+
 	try {
 		await Promise.all(promises);
 	} catch (error) {
@@ -101,6 +106,7 @@ function getParams(funcs) {
 				});
 			}
 		}
+
 		if (func.returns && func.returns.length > 0) {
 			for (const returns of func.returns) {
 				temp.push({
@@ -110,6 +116,7 @@ function getParams(funcs) {
 			}
 		}
 	}
+
 	const names = new Set();
 	for (const param of temp) names.add(param.name);
 	const temp2 = temp.filter((param) => {
@@ -117,6 +124,7 @@ function getParams(funcs) {
 			names.delete(param.name);
 			return true;
 		}
+
 		return false;
 	});
 	return temp2;
@@ -130,6 +138,7 @@ async function addConceptsToDB(params) {
 			desc: param.desc,
 		}));
 	}
+
 	try {
 		await Promise.all(promises);
 	} catch (error) {
@@ -163,16 +172,20 @@ export async function fixReferences() {
 				if (func.argsNames.length > func.args.length && func.argsNames.includes(concept.name)) {
 					func.args.push(concept._id);
 				}
+
 				if (func.returnsNames.length > func.returns.length && func.returnsNames.includes(concept.name)) {
 					func.returns.push(concept._id);
 				}
 			}
+
 			promises.push(func.save());
 		}
+
 		await Promise.all(promises);
 	} catch (error) {
 		console.error(error);
 	}
+
 	// FixFuncInConcept
 	try {
 		const concepts = await Concept.find({});
@@ -186,6 +199,7 @@ export async function fixReferences() {
 						concept.units.push(func.argsUnits[i]);
 					}
 				}
+
 				for (let i = 0; i < func.returnsNames.length; i += 1) {
 					if (func.returnsNames[i] === concept.name) {
 						concept.func_res.push({ id: func._id, name: func.name, unitType: func.returnsUnits[i] });
@@ -193,6 +207,7 @@ export async function fixReferences() {
 					}
 				}
 			}
+
 			let tmp;
 			let tmpKey = [];
 			tmp = concept.func_arg.filter((arg) => {
@@ -201,11 +216,13 @@ export async function fixReferences() {
 					tmpKey[key] = true;
 					return true;
 				}
+
 				return false;
 			});
 			while (concept.func_arg.length > 0) {
 				concept.func_arg.pop();
 			}
+
 			for (const el of tmp) concept.func_arg.push(el);
 			tmpKey = [];
 			tmp = concept.func_res.filter((arg) => {
@@ -214,23 +231,28 @@ export async function fixReferences() {
 					tmpKey[key] = true;
 					return true;
 				}
+
 				return false;
 			});
 			while (concept.func_res.length > 0) {
 				concept.func_res.pop();
 			}
+
 			for (const el of tmp) concept.func_res.push(el);
 			tmp = concept.units.filter((el, pos, arr) => arr.indexOf(el) === pos);
 			for (const el of tmp) {
 				concept.units.pull(el);
 				concept.units.push(el);
 			}
+
 			promises2.push(concept.save());
 		}
+
 		await Promise.all(promises2);
 	} catch (error) {
 		console.error(error);
 	}
+
 	// FixRelations
 	try {
 		const concepts = await Concept.find({});
@@ -240,11 +262,13 @@ export async function fixReferences() {
 				if (connection.start.name.includes(concept.name)) {
 					connection.start.id = (concept._id);
 				}
+
 				if (connection.end.name.includes(concept.name)) {
 					connection.end.id = (concept._id);
 				}
 			}
 		}
+
 		const tmpKey = [];
 		relation.connects = relation.connects.filter((conn) => {
 			const key = `${conn.start}|${conn.end}|${conn.mathRelation}`;
@@ -252,6 +276,7 @@ export async function fixReferences() {
 				tmpKey[key] = true;
 				return true;
 			}
+
 			return false;
 		});
 		relation.markModified("connects");

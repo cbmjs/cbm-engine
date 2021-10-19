@@ -16,9 +16,11 @@ router.get("/concepts", (req, res) => {
 		if (err) {
 			console.error(err);
 		}
+
 		if (concepts.length === 0) {
 			return res.status(418).send("There aren’t any concepts.");
 		}
+
 		const temp = [];
 		for (const concept of concepts) {
 			temp.push({
@@ -27,6 +29,7 @@ router.get("/concepts", (req, res) => {
 				units: concept.units,
 			});
 		}
+
 		return res.json(temp);
 	});
 });
@@ -36,9 +39,11 @@ router.get("/concepts/names", (req, res) => {
 		if (err) {
 			console.error(err);
 		}
+
 		if (concepts.length === 0) {
 			return res.status(418).send("There aren’t any concepts.");
 		}
+
 		const temp = [];
 		for (const concept of concepts) temp.push(concept.name);
 		return res.json(temp);
@@ -50,9 +55,11 @@ router.get("/functions", (req, res) => {
 		if (err) {
 			console.error(err);
 		}
+
 		if (funcs.length === 0) {
 			return res.status(418).send("There aren’t any functions.");
 		}
+
 		const temp = [];
 		for (const func of funcs) {
 			temp.push({
@@ -61,6 +68,7 @@ router.get("/functions", (req, res) => {
 				source_code: func.codeFile,
 			});
 		}
+
 		return res.json(temp);
 	});
 });
@@ -70,9 +78,11 @@ router.get("/functions/names", (req, res) => {
 		if (err) {
 			console.error(err);
 		}
+
 		if (funcs.length === 0) {
 			return res.status(418).send("There aren’t any functions.");
 		}
+
 		const temp = [];
 		for (const func of funcs) temp.push(func.name);
 		return res.json(temp);
@@ -84,9 +94,11 @@ router.get("/functions/descriptions", (req, res) => {
 		if (err) {
 			console.error(err);
 		}
+
 		if (funcs.length === 0) {
 			return res.status(418).send("There aren’t any functions.");
 		}
+
 		const temp = [];
 		for (const func of funcs) temp.push(func.desc);
 		return res.json(temp);
@@ -98,9 +110,11 @@ router.get("/relations", (req, res) => {
 		if (err) {
 			console.error(err);
 		}
+
 		if (relations.length === 0) {
 			return res.status(418).send("There aren’t any relations.");
 		}
+
 		const temp = [];
 		for (const relation of relations) {
 			temp.push({
@@ -108,6 +122,7 @@ router.get("/relations", (req, res) => {
 				description: relation.desc,
 			});
 		}
+
 		return res.json(temp);
 	});
 });

@@ -47,6 +47,7 @@ router.post("/call", (req, res) => {
 			inputUnits[i] = element;
 		}
 	}
+
 	for (const [i, element] of outputConcepts.entries()) {
 		if (outputUnits[i] === null || outputUnits[i] === undefined || outputUnits[i] === "-" || outputUnits[i] === "") {
 			outputUnits[i] = element;
@@ -61,9 +62,11 @@ router.post("/call", (req, res) => {
 	) {
 		return res.status(400).send("A function must have at least one output and every output must have its unit.");
 	}
+
 	if (inputConcepts.length !== inputUnits.length) {
 		return res.status(400).send("Input parameters must have the same length.");
 	}
+
 	return request.post({
 		uri: `${req.protocol}://${req.get("host")}${req.originalUrl[0]}gbm/search/`,
 		form: { inputConcepts, outputConcepts },
@@ -85,14 +88,17 @@ router.post("/call", (req, res) => {
 					};
 					return res.json(codeRes);
 				}
+
 				const funcToRun = require(`../../library/${func.codeFile}`);
 				const funcResult = funcToRun(...inputVars);
 				return res.send(JSON.stringify(funcResult));
 			}
+
 			return Functionn.find({ codeFile: { $in: JSON.parse(body).map((item) => item.function) } }).populate("results").exec((err3, funcs2) => {
 				if (err3) {
 					console.log(err3);
 				}
+
 				Relation.findOne({ name: "unitConversion" }, (err4, relation) => {
 					if (err4) console.error(err4);
 					let funcsChecked = 0;
@@ -121,12 +127,14 @@ router.post("/call", (req, res) => {
 											}
 										}
 									}
+
 									if (!foundInputRelation) {
 										return res.status(418).send("There is a function whith these concepts, but given units can’t be interpreted.");
 									}
 								}
 							}
 						}
+
 						const funcToRun = require(`../../library/${func.codeFile}`);
 						const funcResult = funcToRun(...correctInputs);
 						if (func.returnsUnits[0] === outputUnits[0]) {
@@ -137,8 +145,10 @@ router.post("/call", (req, res) => {
 								};
 								return res.json(codeRes);
 							}
+
 							return res.send(JSON.stringify(funcResult));
 						}
+
 						let foundOutputRelation = false;
 						try {
 							const outMath = math.unit(outputUnits[0]);
@@ -152,6 +162,7 @@ router.post("/call", (req, res) => {
 								};
 								return res.json(codeRes);
 							}
+
 							return res.send(JSON.stringify(mathRelation));
 						} catch {
 							for (const connection of relation.connects) {
@@ -167,17 +178,21 @@ router.post("/call", (req, res) => {
 										};
 										return res.json(codeRes);
 									}
+
 									return res.send(mathRelation);
 								}
 							}
 						}
+
 						if (!foundOutputRelation) {
 							return res.status(418).send("There is a function whith these concepts, but given units can’t be interpreted.");
 						}
+
 						if (funcsChecked === funcs.length) {
 							return res.status(418).send("Functionn not found in DB.");
 						}
 					}
+
 					return res.status(418).send("Functionn not found in DB.");
 				});
 			});

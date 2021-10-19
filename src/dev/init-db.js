@@ -11,6 +11,7 @@ MongoClient.connect(url, (err, db) => {
 	if (err) {
 		console.error(err);
 	}
+
 	const mongoCommand = {
 		copydb: 1,
 		fromhost: "localhost",
@@ -24,6 +25,7 @@ MongoClient.connect(url, (err, db) => {
 		} else {
 			console.log(data);
 		}
+
 		db.close();
 	});
 });

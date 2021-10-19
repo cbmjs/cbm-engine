@@ -36,10 +36,12 @@ router.get("/c/:concept", (req, res) => {
 				if (checked === allSynonyms.length && !res.headersSent) return res.status(418).send("Concept not found in DB.");
 				return null;
 			};
+
 			for (const concept2 of allSynonyms) {
 				if (res.headersSent) break;
 				Concept.findOne({ name: concept2.replace(/[^\s\w]/g, "") }, conceptcb);
 			}
+
 			return null;
 		});
 	});
@@ -54,9 +56,11 @@ router.get("/f/:func", (req, res) => {
 		if (err) {
 			console.error(err);
 		}
+
 		if (func) {
 			return res.json(func);
 		}
+
 		return res.status(418).send("Functionn not found in DB");
 	});
 });
@@ -70,9 +74,11 @@ router.get("/r/:rel", (req, res) => {
 		if (err) {
 			console.error(err);
 		}
+
 		if (rel) {
 			return res.json(rel);
 		}
+
 		return res.status(418).send("Relation not found in DB");
 	});
 });

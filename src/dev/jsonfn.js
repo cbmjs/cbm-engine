@@ -37,11 +37,14 @@ export function stringify(obj) {
 			if (fnBody.length < 8 || fnBody.slice(0, 8) !== "function") { // This is ES6 Arrow Function
 				return `_NuFrRa_${fnBody}`;
 			}
+
 			return fnBody;
 		}
+
 		if (value instanceof RegExp) {
 			return `_PxEgEr_${value}`;
 		}
+
 		return value;
 	});
 }
@@ -53,6 +56,7 @@ export function parse(str, date2obj) {
 		if (typeof value !== "string") {
 			return value;
 		}
+
 		if (value.length < 8) {
 			return value;
 		}
@@ -62,13 +66,16 @@ export function parse(str, date2obj) {
 		if (iso8061 && iso8061.test(value)) {
 			return new Date(value);
 		}
+
 		/* eslint-disable no-new-func */
 		if (prefix === "function") {
 			return new Function(`(${value})`);
 		}
+
 		if (prefix === "_PxEgEr_") {
 			return new Function(value.slice(8));
 		}
+
 		if (prefix === "_NuFrRa_") {
 			return new Function(value.slice(8));
 		}
