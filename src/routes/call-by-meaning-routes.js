@@ -94,7 +94,7 @@ router.post("/call", (req, res) => {
 				return res.send(JSON.stringify(funcResult));
 			}
 
-			return Functionn.find({ codeFile: { $in: JSON.parse(body).map((item) => item.function) } }).populate("results").exec((err3, funcs2) => {
+			return Functionn.find({ codeFile: { $in: JSON.parse(body).map((item) => item.function) } }).populate("returns").exec((err3, funcs2) => {
 				if (err3) {
 					console.log(err3);
 				}
