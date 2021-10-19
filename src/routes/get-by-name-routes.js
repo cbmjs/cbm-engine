@@ -52,7 +52,7 @@ router.get("/f", (req, res) => {
 });
 
 router.get("/f/:func", (req, res) => {
-	Functionn.findOne({ name: req.params.func }).populate("args").populate("results").exec((err, func) => {
+	Functionn.findOne({ name: req.params.func }).populate(["args", "returns"]).exec((err, func) => {
 		if (err) {
 			console.error(err);
 		}

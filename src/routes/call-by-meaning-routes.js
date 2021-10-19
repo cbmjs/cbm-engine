@@ -77,7 +77,7 @@ router.post("/call", (req, res) => {
 			codeFile: { $in: JSON.parse(body).map((item) => item.function) },
 			argsUnits: inputUnits,
 			returnsUnits: outputUnits,
-		}).populate("results").exec((err2, funcs) => {
+		}).populate("returns").exec((err2, funcs) => {
 			if (err2) console.error(err2);
 			if (funcs.length > 0) {
 				const [func] = funcs; // Only possibility
