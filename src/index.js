@@ -15,9 +15,11 @@ import getByNameRoutes from "./routes/get-by-name-routes.js";
 import getByMeaningRoutes from "./routes/get-by-meaning-routes.js";
 import callByMeaningRoutes from "./routes/call-by-meaning-routes.js";
 
-mongoose
-	.connect(process.env.DB_HOST || "mongodb://localhost:27017/".concat(process.env.DB || "callbymeaning"))
-	.catch((error) => console.error(error.message));
+try {
+	await mongoose.connect(process.env.DB_HOST || "mongodb://localhost:27017/".concat(process.env.DB || "callbymeaning"));
+} catch (error_) {
+	console.log(error_.message);
+}
 
 try {
 	fs.mkdirSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "../logs/"));
