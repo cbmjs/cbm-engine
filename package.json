@@ -29,13 +29,13 @@
 		"ignorePatterns": "library/*"
 	},
 	"dependencies": {
-		"chalk": "^5.0.0",
-		"dotenv": "^14.3.2",
-		"express": "^4.17.2",
+		"chalk": "^5.0.1",
+		"dotenv": "^16.0.0",
+		"express": "^4.17.3",
 		"helmet": "^5.0.2",
-		"mathjs": "^10.1.0",
-		"mongodb": "^4.3.1",
-		"mongoose": "^6.1.8",
+		"mathjs": "^10.4.2",
+		"mongodb": "^4.4.1",
+		"mongoose": "^6.2.9",
 		"morgan": "^1.10.0",
 		"multer": "^1.4.4",
 		"natural": "^5.1.13",
@@ -45,11 +45,11 @@
 		"wordpos": "^2.1.0"
 	},
 	"devDependencies": {
-		"ava": "^4.0.1",
+		"ava": "^4.1.0",
 		"c8": "^7.11.0",
-		"eslint": "^8.7.0",
-		"eslint-config-iamnapo": "^21.0.0",
-		"got": "^12.0.1",
+		"eslint": "^8.12.0",
+		"eslint-config-iamnapo": "^24.0.0",
+		"got": "^12.0.3",
 		"jsdoc": "^3.6.10",
 		"test-listen": "^1.1.0"
 	},
