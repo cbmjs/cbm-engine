@@ -7,3 +7,5 @@ services:
       - key: DB_HOST
         sync: false
     plan: free
+    buildCommand: npm ci
+    startCommand: npm start
