@@ -23,7 +23,7 @@ If any of the above isn't applicable, for example if you ask for a function with
 
 ``` javascript
 const request = require('request');
-const uri = 'https://call-by-meaning.herokuapp.com/gbm/search';
+const uri = 'https://call-by-meaning.onrender.com/gbm/search';
 let params = {
   'inputConcepts': 'date',
   'outputConcepts': 'time'

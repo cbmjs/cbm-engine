@@ -26,7 +26,7 @@ If any of the above isn't applicable, for example if you ask for a function with
 
 ``` javascript
 const request = require('request');
-const uri = 'https://call-by-meaning.herokuapp.com/cbm/call';
+const uri = 'https://call-by-meaning.onrender.com/cbm/call';
 let bday = new Date(1993, 2, 24);
 let params = {
   'inputConcepts': 'date',

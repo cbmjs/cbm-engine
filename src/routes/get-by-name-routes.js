@@ -39,7 +39,7 @@ router.get("/c/:concept", (req, res) => {
 
 			for (const concept2 of allSynonyms) {
 				if (res.headersSent) break;
-				Concept.findOne({ name: concept2.replace(/[^\s\w]/g, "") }, conceptcb);
+				Concept.findOne({ name: concept2.replaceAll(/[^\s\w]/g, "") }, conceptcb);
 			}
 
 			return null;

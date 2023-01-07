@@ -16,6 +16,7 @@ import getByMeaningRoutes from "./routes/get-by-meaning-routes.js";
 import callByMeaningRoutes from "./routes/call-by-meaning-routes.js";
 
 try {
+	mongoose.set("strictQuery", true);
 	await mongoose.connect(process.env.DB_HOST || "mongodb://localhost:27017/".concat(process.env.DB || "callbymeaning"));
 } catch (error_) {
 	console.log(error_.message);

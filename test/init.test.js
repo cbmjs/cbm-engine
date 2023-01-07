@@ -12,7 +12,7 @@ test.before(async (t) => {
 	t.context.got = got.extend({ throwHttpErrors: false, prefixUrl: t.context.prefixUrl });
 });
 
-test.after.always((t) => t.context.server.close());
+test.after.always((t) => { t.context.server.close(); });
 
 test("GET / returns status code 200", async (t) => {
 	const { statusCode } = await t.context.got("");

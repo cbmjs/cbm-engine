@@ -2,8 +2,7 @@
 
 > Server-side code of the cbmjs platform.
 
-[![build](https://img.shields.io/github/workflow/status/cbmjs/cbm-engine/CI?style=for-the-badge&logo=github&label=)](https://github.com/cbmjs/cbm-engine/actions) [![license](https://img.shields.io/github/license/cbmjs/cbm-engine.svg?style=for-the-badge)](./LICENSE)
-[![Deploy](https://img.shields.io/badge/%E2%AC%86%EF%B8%8FDeploy%20to-Heroku-6762a6.svg?style=for-the-badge)](https://heroku.com/deploy)
+[![build](https://badges.iamnapo.me/ci/cbmjs/cbm-engine)](https://github.com/cbmjs/cbm-engine/actions) [![Deploy](https://img.shields.io/badge/%E2%AC%86%EF%B8%8FDeploy%20to-Render-4f65f1.svg?style=for-the-badge)](https://render.com/deploy?repo=https://github.com/cbmjs/cbm-engine)
 
 ## Intro
 

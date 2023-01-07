@@ -12,15 +12,6 @@ import Relation from "../models/relation.js";
 import { fixReferences, fixTests } from "../dev/fill-with-funcs.js";
 
 const router = new express.Router();
-const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, path.join(path.dirname(fileURLToPath(import.meta.url)), "../../library"));
-	},
-	filename: (req, file, cb) => {
-		cb(null, file.originalname);
-	},
-});
-const upload = multer({ storage });
 
 router.all("/", (req, res) => {
 	res.send("Hello. From this path you can add new thing to the DB by sending a POST request to /concept, /function or /relation.");
@@ -61,7 +52,7 @@ router.post("/concept", (req, res) => {
 	});
 });
 
-router.post("/function", upload.any(), (req, res) => {
+router.post("/function", multer().any(), (req, res) => {
 	const desc = req.body.desc || "";
 	const isAPI = req.body.isApi ? JSON.parse(req.body.isApi) : false;
 	let argsNames = req.body.argsNames || [];
@@ -92,7 +83,8 @@ router.post("/function", upload.any(), (req, res) => {
 			" "}=> { uri = uri.replace(el, args[index]); });\nconst res = request('GET', uri);\nreturn res.getBody('utf8');\n};`;
 		fs.writeFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), "../../library", codeFile), apiFunc);
 	} else {
-		codeFile = (req.files && req.files[0].originalname) ? req.files[0].originalname : "default.js";
+		codeFile = req.files?.[0]?.originalName || "default.js";
+		req.files?.[0]?.stream?.pipe?.(fs.createWriteStream(path.join(path.dirname(fileURLToPath(import.meta.url)), "../../library", codeFile)));
 	}
 
 	Functionn.findOne({ name: req.body.name }, (err, func) => {

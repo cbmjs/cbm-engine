@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: cbm-engine
+		region: frankfurt
+		env: node
+		envVars:
+			- key: DB_HOST
+				sync: false
+		plan: free

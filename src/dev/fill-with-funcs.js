@@ -28,7 +28,7 @@ function getFunctions() {
 }
 
 function replaceAll(target, search, replacement) {
-	return target.replace(new RegExp(search, "g"), replacement);
+	return target.replaceAll(new RegExp(search, "g"), replacement);
 }
 
 function getArgs(func) {
