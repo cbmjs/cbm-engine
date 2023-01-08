@@ -36,4 +36,4 @@ docker run -p 3000:3000 call-by-meaning
 
 ## Unit Tests
 
-Run tests via the command `yarn test`
+Run tests via the command `npm test`
