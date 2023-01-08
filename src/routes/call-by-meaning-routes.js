@@ -68,7 +68,7 @@ router.post("/call", (req, res) => {
 	}
 
 	return request.post({
-		uri: `${req.protocol}://${req.get("host")}${req.originalUrl[0]}gbm/search/`,
+		uri: "/gbm/search/",
 		form: { inputConcepts, outputConcepts },
 	}, (err, response, body) => {
 		if (err) console.error(err);
