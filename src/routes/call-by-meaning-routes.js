@@ -67,8 +67,7 @@ router.post("/call", (req, res) => {
 		return res.status(400).send("Input parameters must have the same length.");
 	}
 
-	return request.post({
-		uri: "/gbm/search/",
+	return request.post(`${req.protocol}://${req.get("host")}/gbm/search`, {
 		form: { inputConcepts, outputConcepts },
 	}, (err, response, body) => {
 		if (err) console.error(err);
