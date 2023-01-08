@@ -42,7 +42,7 @@ router.post("/search", (req, res) => {
 				break;
 			}
 
-			request.get(`${req.protocol}://${req.get("host")}/gbn/c/${outputConcepts[i]}`, (err2, response, body) => {
+			request.get(`${process.env.RENDER_EXTERNAL_URL || `${req.protocol}://${req.get("host")}`}/gbn/c/${outputConcepts[i]}`, (err2, response, body) => {
 				if (response.statusCode !== 200) {
 					return res.status(418).send(`Could not interpret the concept: ${outputConcepts[i]}`);
 				}
@@ -72,7 +72,7 @@ router.post("/search", (req, res) => {
 								break;
 							}
 
-							request.get(`${req.protocol}://${req.get("host")}/gbn/c/${inputConcepts[j]}`, (err3, response2, body2) => {
+							request.get(`${process.env.RENDER_EXTERNAL_URL || `${req.protocol}://${req.get("host")}`}/gbn/c/${inputConcepts[j]}`, (err3, response2, body2) => {
 								if (response2.statusCode !== 200) {
 									return res.status(418).send(`Could not interpret the concept: ${inputConcepts[j]}`);
 								}
