@@ -57,7 +57,7 @@ test("POST /cbm/call can retrieve a function’s code if returncode = true", asy
 		},
 		headers: { returnCode: true },
 	}).json();
-	t.is(func, "now.js");
+	t.is(func, "getTime.js");
 });
 
 test("POST /cbm/call returns status 418 if test can’t find a function in the DB", async (t) => {

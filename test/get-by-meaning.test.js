@@ -36,7 +36,7 @@ test("GET /gbm/search/<everythingelse> returns status code 404", async (t) => {
 
 test("POST /gbm/search/ returns a function if test exists", async (t) => {
 	const res = await t.context.got.post("search", { json: { outputConcepts: ["time"] } }).json();
-	t.is(res[0].function, "now.js");
+	t.is(res[0].function, "getTime.js");
 });
 
 test("POST /gbm/search/ returns returns status code 418 if test can’t find a function", async (t) => {
