@@ -1,18 +1,18 @@
 import { createRequire } from "node:module";
 
-import shell from "shelljs";
+import { execaSync } from "execa";
 
 import Concept from "../models/concept.js";
 import Functionn from "../models/function.js";
 import Relation from "../models/relation.js";
 
 function createFuncJSON() {
-	shell.exec("rm -f ./app/dev/funcs.json");
-	if (shell.exec("jsdoc ./library -X >> ./src/dev/funcs.json").code === 0) {
-		shell.echo("Success: funcs.json created.");
+	execaSync("rm", ["-f", "./src/dev/funcs.json"]);
+	if (execaSync("jsdoc", ["./library", "-X", ">>", "./src/dev/funcs.json"]).exitCode === 0) {
+		execaSync("echo", ["Success: funcs.json created."]);
 	} else {
-		shell.echo("Error: Could not create .json");
-		shell.exit(1);
+		execaSync("echo", ["Error: Could not create .json"]);
+		execaSync("exit", ["1"]);
 	}
 }
 
